@@ -48,21 +48,23 @@ export default function FaqComponent() {
                     onClick={() => handleToggle(index)}
                     className="flex w-full items-start justify-between text-left text-gray-900"
                   >
-                    <span className="text-base/7 font-semibold">
+                    <span className="text-base leading-7 font-semibold">
                       {faq.question}
                     </span>
                     <span className="ml-6 flex h-7 items-center">
                       {openIndex === index ? (
-                        <MinusIcon className="size-6" aria-hidden="true" />
+                        <MinusIcon className="h-6 w-6" aria-hidden="true" />
                       ) : (
-                        <PlusIcon className="size-6" aria-hidden="true" />
+                        <PlusIcon className="h-6 w-6" aria-hidden="true" />
                       )}
                     </span>
                   </button>
                 </dt>
                 {openIndex === index && (
                   <dd className="mt-2 pr-12">
-                    <p className="text-base/7 text-gray-700">{faq.answer}</p>
+                    <p className="text-base leading-7 text-gray-700">
+                      {faq.answer}
+                    </p>
                   </dd>
                 )}
               </div>
