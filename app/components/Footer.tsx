@@ -27,23 +27,24 @@ export default function Footer() {
               </Link>
             </div>
             <p className="text-sm text-gray-600 max-w-sm mb-4">
-              Making the world a better place through constructing elegant
-              hierarchies.
+              Virtual Wardrobe is a platform that helps you manage your wardrobe
+              and plan outfits with ease. Discover new styles, organize your
+              clothes, and share your looks with friends.
             </p>
             <div className="flex space-x-5 text-gray-500">
-              <a href="#" aria-label="Facebook">
+              <a href="#" aria-label="Facebook" className="text-xl">
                 <FaFacebookF />
               </a>
-              <a href="#" aria-label="Instagram">
+              <a href="#" aria-label="Instagram" className="text-xl">
                 <FaInstagram />
               </a>
-              <a href="#" aria-label="X">
+              <a href="#" aria-label="X" className="text-xl">
                 <FaXTwitter />
               </a>
-              <a href="#" aria-label="GitHub">
+              <a href="#" aria-label="GitHub" className="text-xl">
                 <FaGithub />
               </a>
-              <a href="#" aria-label="YouTube">
+              <a href="#" aria-label="YouTube" className="text-xl">
                 <FaYoutube />
               </a>
             </div>
@@ -52,22 +53,38 @@ export default function Footer() {
           {/* Links */}
           <div className="grid grid-cols-2 gap-10 sm:grid-cols-4">
             <div>
-              <h3 className="text-sm font-semibold text-gray-900">Solutions</h3>
+              <h3 className="text-sm font-semibold text-gray-900">
+                Navigation
+              </h3>
               <ul className="mt-4 space-y-2 text-sm text-gray-600">
                 <li>
-                  <a href="#">Marketing</a>
+                  <Link href="/" className="text-blue-600 hover:underline">
+                    Home
+                  </Link>
                 </li>
                 <li>
-                  <a href="#">Analytics</a>
+                  <Link
+                    href="/wardrobe"
+                    className="text-blue-600 hover:underline"
+                  >
+                    Wardrobe
+                  </Link>
                 </li>
                 <li>
-                  <a href="#">Automation</a>
+                  <Link
+                    href="/about-us"
+                    className="text-blue-600 hover:underline"
+                  >
+                    About Us
+                  </Link>
                 </li>
                 <li>
-                  <a href="#">Commerce</a>
-                </li>
-                <li>
-                  <a href="#">Insights</a>
+                  <Link
+                    href="/contact-us"
+                    className="text-blue-600 hover:underline"
+                  >
+                    Contact Us
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -124,7 +141,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="mt-16 border-t border-gray-200 pt-6 text-center text-sm text-gray-500">
-          © 2025 Your Company, Inc. All rights reserved.
+          &copy; 2025 Virtual Wardrobe. All rights reserved.
         </div>
       </div>
     </footer>

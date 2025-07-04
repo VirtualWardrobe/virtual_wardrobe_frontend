@@ -6,27 +6,32 @@ import { Minus, Plus } from "lucide-react";
 const faqs = [
   {
     id: 1,
-    question: "How do you make holy water?",
+    question: "How do I upload my wardrobe items?",
     answer:
-      "You boil the hell out of it. This method ensures that all impurities, both physical and metaphysical, are thoroughly removed.",
+      "To upload your wardrobe items, simply create an account and navigate to the 'My Wardrobe' section. From there, you can easily upload photos of your clothing, tag them with relevant attributes, and categorize them for easy access.",
   },
   {
     id: 2,
-    question: "What's the best thing about Switzerland?",
-    answer:
-      "I don't know, but the flag is a big plus. It's a simple, effective design that communicates a positive message instantly.",
+    question: "Are ther any subscription fees?",
+    answer: "No! It's absolutely free.",
   },
   {
     id: 3,
-    question: "Why did the invisible man turn down the job offer?",
+    question: "Can I share my wardrobe with friends?",
     answer:
-      "He couldn't see himself doing it. It's important for one's career to have a clear vision of the role, which he unfortunately lacked.",
+      "Yes, you can share your wardrobe with friends by inviting them to view your closet. You can also collaborate on outfit planning and get feedback on your style choices.",
   },
   {
     id: 4,
-    question: "Why do you never see elephants hiding in trees?",
+    question: "How does the outfit planning feature work?",
     answer:
-      "Because they're really, really good at it. Their stealth and camouflage techniques are far more advanced than we can comprehend.",
+      "The outfit planning feature allows you to create outfits from your wardrobe items. You can mix and match clothing pieces, save your favorite combinations, and even plan outfits for specific occasions or dates.",
+  },
+  {
+    id: 5,
+    question: "Is my data secure?",
+    answer:
+      "Absolutely! We take data security very seriously. Your wardrobe data is stored securely, and we use encryption to protect your information. You can read more about our privacy policy on our website.",
   },
 ];
 

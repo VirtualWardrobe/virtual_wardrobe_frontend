@@ -14,7 +14,7 @@ export default function Testimonials() {
   const testimonials: Testimonial[] = [
     {
       quote:
-        "“Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo expedita voluptas culpa sapiente alias molestiae. Numquam corrupti in laborum sed rerum et corporis.”",
+        "“An absolute game-changer for organizing my closet! I love how easy it is to manage my wardrobe with this platform. The virtual closet and outfit planning features save me so much time every morning. Highly recommend!”",
       author: "Judith Black",
       title: "CEO of Workcation",
       image:
@@ -22,7 +22,7 @@ export default function Testimonials() {
     },
     {
       quote:
-        "“Workcation has transformed the way we approach team collaboration. The seamless integration and intuitive interface have significantly boosted our productivity.”",
+        "“Perfect for fashion lovers and minimalists alike!  I've streamlined my wardrobe thanks to the analytics tool. I can see what I wear most and now focus on quality over quantity. The outfit visualization feature is also a lifesaver for planning outfits quickly.”",
       author: "John Doe",
       title: "CTO of InnovateCorp",
       image:
@@ -30,7 +30,7 @@ export default function Testimonials() {
     },
     {
       quote:
-        "“I can't imagine going back to our old system after experiencing the efficiency and support Workcation provides. It's truly a game-changer for our workforce.”",
+        "“A stylish, eco-friendly fashion platform.This site has helped me make better fashion choices. I've reduced unnecessary shopping and learned how to repurpose clothes I already own. The sustainable insights are eye-opening and incredibly useful.”",
       author: "Jane Smith",
       title: "COO at GlobalReach",
       image:
@@ -42,7 +42,7 @@ export default function Testimonials() {
     useState<number>(0);
   const [isFading, setIsFading] = useState<boolean>(false);
   const intervalTime: number = 4000;
-  const fadeDuration: number = 400;
+  const fadeDuration: number = 300;
 
   const handleDotClick = (index: number): void => {
     if (index === currentTestimonialIndex) return;
@@ -89,13 +89,12 @@ export default function Testimonials() {
       </div>
 
       <div className="mx-auto max-w-2xl text-center">
-        <Image
-          alt="Workcation logo"
-          src="https://tailwindcss.com/plus-assets/img/logos/workcation-logo-indigo-600.svg"
-          width={200}
-          height={200}
-          className="mx-auto h-12"
-        />
+        <h2 className="text-base/7 font-semibold text-indigo-600">
+          TESTIMONIALS
+        </h2>
+        <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">
+          What our users say
+        </p>
 
         <figure
           className={`mt-10 transition-opacity duration-300 ease-in-out ${

@@ -1,28 +1,28 @@
 import {
   CloudArrowUpIcon,
-  LockClosedIcon,
-  ServerIcon,
+  SparklesIcon,
+  ArrowPathIcon,
 } from "@heroicons/react/20/solid";
 import Image from "next/image";
 
 const features = [
   {
-    name: "Push to deploy.",
+    name: "Digitize your wardrobe.",
     description:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.",
+      "Create a comprehensive digital catalog of your clothing items with photos, tags, and detailed information for easy browsing and organization.",
     icon: CloudArrowUpIcon,
   },
   {
-    name: "SSL certificates.",
+    name: "Smart outfit planning.",
     description:
-      "Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo.",
-    icon: LockClosedIcon,
+      "Visualize and plan outfits virtually with our intelligent matching system that suggests combinations based on your style preferences and occasions.",
+    icon: SparklesIcon,
   },
   {
-    name: "Database backups.",
+    name: "Sustainability tracking.",
     description:
-      "Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.",
-    icon: ServerIcon,
+      "Track your clothing usage patterns and carbon footprint to make more conscious fashion choices and reduce waste.",
+    icon: ArrowPathIcon,
   },
 ];
 
@@ -34,15 +34,19 @@ export default function FeatureSection() {
           <div className="lg:pt-4 lg:pr-8">
             <div className="lg:max-w-lg">
               <h2 className="text-base/7 font-semibold text-indigo-600">
-                Deploy faster
+                ABOUT
               </h2>
               <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">
-                A better workflow
+                Who we are
               </p>
               <p className="mt-6 text-lg/8 text-gray-700">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                Maiores impedit perferendis suscipit eaque, iste dolor
-                cupiditate blanditiis ratione.
+                We believe that fashion should be fun, accessible, and
+                sustainable. With our virtual wardrobe, you can mix and match
+                pieces, create outfits for any occasion, and even get
+                recommendations based on your style preferences. Plus, with
+                detailed tracking of your wardrobe usage, you&apos;ll always
+                know what you have and can make mindful decisions about new
+                purchases.
               </p>
               <dl className="mt-10 max-w-xl space-y-8 text-base/7 text-gray-600 lg:max-w-none">
                 {features.map((feature) => (

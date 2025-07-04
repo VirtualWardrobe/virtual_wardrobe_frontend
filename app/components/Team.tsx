@@ -2,35 +2,28 @@ import Image from "next/image";
 
 const people = [
   {
-    name: "Leslie Alexander",
-    role: "Co-Founder / CEO",
+    name: "Anirudh P S",
+    role: "Member 1",
     imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      "https://virtual-wardrobe-s3.s3.ap-southeast-2.amazonaws.com/assets/img/team/Anirudh.jpg",
   },
   {
-    name: "Michael Foster",
-    role: "Co-Founder / CTO",
+    name: "Akilesh S",
+    role: "Member 2",
     imageUrl:
-      "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      "https://virtual-wardrobe-s3.s3.ap-southeast-2.amazonaws.com/assets/img/team/Akilesh.jpg",
   },
   {
-    name: "Dries Vincent",
-    role: "Business Relations",
+    name: "Aaryan P Shreyas",
+    role: "Member 3",
     imageUrl:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    name: "Lindsay Walton",
-    role: "Marketing Director",
-    imageUrl:
-      "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      "https://virtual-wardrobe-s3.s3.ap-southeast-2.amazonaws.com/assets/img/team/Aaryan.jpg",
   },
 ];
 
 export default function Team() {
   return (
     <section className="relative isolate bg-white px-6 pt-16 pb-16 sm:pt-24 sm:pb-24 lg:px-8">
-      {/* Background blur shape - top */}
       <div
         aria-hidden="true"
         className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -44,16 +37,15 @@ export default function Team() {
         />
       </div>
 
-      {/* Content */}
-      <div className="mx-auto max-w-7xl grid gap-20 xl:grid-cols-3">
-        <div className="max-w-xl text-center xl:text-left mx-auto xl:mx-0">
+      <div className="mx-auto grid max-w-2xl gap-y-16 gap-x-8 xl:max-w-7xl xl:grid-cols-3 xl:gap-x-16 xl:gap-y-24">
+        <div className="max-w-xl text-center mx-auto xl:mx-0 xl:text-left xl:max-w-none">
           <h2 className="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
             Meet our Team
           </h2>
-          <p className="mt-6 text-lg leading-8 text-gray-600">
+          <p className="mt-8 text-lg leading-8 text-gray-600">
             We&apos;re a dynamic group of individuals who are passionate about
             what we do and dedicated to delivering the best results for our
-            clients.
+            users.
           </p>
         </div>
 
@@ -85,7 +77,6 @@ export default function Team() {
         </ul>
       </div>
 
-      {/* Background blur shape - bottom */}
       <div
         aria-hidden="true"
         className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"

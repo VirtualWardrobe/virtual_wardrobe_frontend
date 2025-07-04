@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
         hostname: "images.unsplash.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "virtual-wardrobe-s3.s3.ap-southeast-2.amazonaws.com",
+        pathname: "/**",
+      },
     ],
   },
 };
