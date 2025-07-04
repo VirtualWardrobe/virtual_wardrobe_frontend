@@ -42,7 +42,7 @@ export default function FaqComponent() {
           </h2>
           <dl className="mt-10 space-y-6 divide-y divide-gray-900/10">
             {faqs.map((faq, index) => (
-              <div key={faq.question} className="pt-6">
+              <div key={index} className="pt-6">
                 <dt>
                   <button
                     onClick={() => handleToggle(index)}
