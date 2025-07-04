@@ -4,7 +4,6 @@ import FeatureSection from "./components/FeatureSection";
 import Testimonials from "./components/Testimonials";
 import FaqComponent from "./components/Faqs";
 import Team from "./components/Team";
-import ContactUs from "./components/ContactUs";
 
 const page = () => {
   return (
@@ -14,7 +13,6 @@ const page = () => {
       <Testimonials />
       <FaqComponent />
       <Team />
-      <ContactUs />
     </div>
   );
 };

@@ -1,6 +1,8 @@
-export default function ContactUs() {
+import { ChevronDownIcon } from "@heroicons/react/16/solid";
+
+export default function Example() {
   return (
-    <div className="bg-white px-6 py-24 sm:py-32 lg:px-8">
+    <div className="px-6 py-24 sm:py-32 lg:px-8">
       <div
         aria-hidden="true"
         className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -105,14 +107,20 @@ export default function ContactUs() {
             <div className="mt-2.5">
               <div className="flex rounded-md bg-white outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
                 <div className="grid shrink-0 grid-cols-1 focus-within:relative">
-                  <input
-                    type="text"
-                    id="countryCode"
-                    name="countryCode"
-                    autoComplete="country-code"
-                    aria-label="Country Code"
-                    placeholder="+91"
-                    className="col-start-1 row-start-1 w-16 appearance-none rounded-md py-2 pr-3.5 pl-3.5 text-base text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                  <select
+                    id="country"
+                    name="country"
+                    autoComplete="country"
+                    aria-label="Country"
+                    className="col-start-1 row-start-1 w-full appearance-none rounded-md py-2 pr-7 pl-3.5 text-base text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                  >
+                    <option>US</option>
+                    <option>CA</option>
+                    <option>EU</option>
+                  </select>
+                  <ChevronDownIcon
+                    aria-hidden="true"
+                    className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
                   />
                 </div>
                 <input

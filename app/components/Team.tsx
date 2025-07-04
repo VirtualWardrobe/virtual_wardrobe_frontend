@@ -48,7 +48,7 @@ export default function Team() {
       <div className="mx-auto max-w-7xl grid gap-20 xl:grid-cols-3">
         <div className="max-w-xl text-center xl:text-left mx-auto xl:mx-0">
           <h2 className="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
-            Meet our leadership
+            Meet our Team
           </h2>
           <p className="mt-6 text-lg leading-8 text-gray-600">
             We&apos;re a dynamic group of individuals who are passionate about

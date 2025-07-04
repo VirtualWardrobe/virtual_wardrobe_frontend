@@ -11,7 +11,7 @@ import Link from "next/link";
 export default function Footer() {
   return (
     <footer className="bg-white border-t border-gray-200">
-      <div className="max-w-7xl mx-auto px-6 py-16 sm:py-20 lg:px-8">
+      <div className="max-w-7xl mx-auto px-6 py-16 sm:py-20 lg:px-8 relative z-10">
         <div className="flex flex-col items-center sm:items-start sm:flex-row sm:justify-between">
           {/* Logo + Description + Socials */}
           <div className="mb-10 sm:mb-0">

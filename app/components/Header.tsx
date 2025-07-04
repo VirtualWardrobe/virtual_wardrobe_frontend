@@ -7,10 +7,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 const navigation = [
-  { name: "Product", href: "#" },
-  { name: "Features", href: "#" },
-  { name: "Marketplace", href: "#" },
-  { name: "Company", href: "#" },
+  { name: "Home", href: "/" },
+  { name: "Wardrobe", href: "/wardrobe" },
+  { name: "About", href: "/about-us" },
+  { name: "Contact", href: "/contact" },
 ];
 
 export default function Header() {
@@ -45,13 +45,13 @@ export default function Header() {
         </div>
         <div className="hidden lg:flex lg:gap-x-12">
           {navigation.map((item) => (
-            <a
-              key={item.name}
+            <Link
               href={item.href}
+              key={item.name}
               className="text-sm/6 font-semibold text-gray-900"
             >
               {item.name}
-            </a>
+            </Link>
           ))}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
