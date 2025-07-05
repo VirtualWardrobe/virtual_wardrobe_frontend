@@ -1,4 +1,6 @@
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
+import CountryCodeSelect from "./CountryCodeSelect";
+import Link from "next/link";
 
 export default function Example() {
   return (
@@ -17,10 +19,11 @@ export default function Example() {
       </div>
       <div className="mx-auto max-w-2xl text-center">
         <h2 className="text-4xl font-semibold tracking-tight text-balance text-gray-900 sm:text-5xl">
-          Contact sales
+          Contact Us
         </h2>
         <p className="mt-2 text-lg/8 text-gray-600">
-          Aute magna irure deserunt veniam aliqua magna enim voluptate.
+          We&apos;d love to hear from you! Whether you have a question,
+          feedback, or just want to say hello, feel free to reach out.
         </p>
       </div>
       <form
@@ -105,19 +108,9 @@ export default function Example() {
               Phone number
             </label>
             <div className="mt-2.5">
-              <div className="flex rounded-md bg-white outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
+              <div className="grid grid-cols-2 rounded-md bg-white outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
                 <div className="grid shrink-0 grid-cols-1 focus-within:relative">
-                  <select
-                    id="country"
-                    name="country"
-                    autoComplete="country"
-                    aria-label="Country"
-                    className="col-start-1 row-start-1 w-full appearance-none rounded-md py-2 pr-7 pl-3.5 text-base text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                  >
-                    <option>US</option>
-                    <option>CA</option>
-                    <option>EU</option>
-                  </select>
+                  <CountryCodeSelect />
                   <ChevronDownIcon
                     aria-hidden="true"
                     className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
@@ -126,9 +119,9 @@ export default function Example() {
                 <input
                   id="phone-number"
                   name="phone-number"
-                  type="text"
+                  type="tel"
                   placeholder="123-456-7890"
-                  className="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
+                  className="block w-full py-2 pr-3 pl-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
                 />
               </div>
             </div>
@@ -168,12 +161,12 @@ export default function Example() {
               className="text-sm/6 text-gray-600"
             >
               By selecting this, you agree to our{" "}
-              <a
-                href="#"
+              <Link
+                href="/privacy-policy"
                 className="font-semibold whitespace-nowrap text-indigo-600"
               >
                 privacy policy
-              </a>
+              </Link>
               .
             </label>
           </div>
