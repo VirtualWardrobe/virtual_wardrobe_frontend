@@ -36,6 +36,14 @@ export default function Testimonials() {
       image:
         "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     },
+    {
+      quote:
+        "“A must-have for anyone who loves fashion! The virtual closet feature is fantastic. I can easily see all my clothes and plan outfits without the hassle of trying things on. The community aspect is also great for getting inspiration from others.”",
+      author: "James Carter",
+      title: "Founder of StyleHub",
+      image:
+        "https://images.unsplash.com/photo-1595152772835-219674b2a8a6?crop=faces&fit=crop&h=256&w=256&q=80",
+    },
   ];
 
   const [currentTestimonialIndex, setCurrentTestimonialIndex] =
