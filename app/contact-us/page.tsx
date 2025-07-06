@@ -152,7 +152,7 @@ export default function Example() {
                   name="agree-to-policies"
                   type="checkbox"
                   aria-label="Agree to policies"
-                  className="absolute inset-0 appearance-none focus:outline-hidden"
+                  className="absolute inset-0 appearance-none focus:outline-hidden cursor-pointer"
                 />
               </div>
             </div>
@@ -174,7 +174,7 @@ export default function Example() {
         <div className="mt-10">
           <button
             type="submit"
-            className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer"
           >
             Let&apos;s talk
           </button>

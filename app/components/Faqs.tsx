@@ -65,9 +65,15 @@ export default function FaqComponent() {
                     </span>
                     <span className="flex h-7 items-center flex-shrink-0">
                       {openIndex === index ? (
-                        <Minus className="w-6 h-6" aria-hidden="true" />
+                        <Minus
+                          className="w-6 h-6 cursor-pointer"
+                          aria-hidden="true"
+                        />
                       ) : (
-                        <Plus className="w-6 h-6" aria-hidden="true" />
+                        <Plus
+                          className="w-6 h-6 cursor-pointer"
+                          aria-hidden="true"
+                        />
                       )}
                     </span>
                   </button>

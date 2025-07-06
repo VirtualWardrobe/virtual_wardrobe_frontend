@@ -79,7 +79,7 @@ function classNames(
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example() {
+export default function Wardrobe() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   return (
@@ -88,24 +88,24 @@ export default function Example() {
       <Dialog
         open={mobileFiltersOpen}
         onClose={setMobileFiltersOpen}
-        className="relative z-40 lg:hidden"
+        className="relative z-[999] lg:hidden"
       >
         <DialogBackdrop
           transition
           className="fixed inset-0 bg-black/25 transition-opacity duration-300 ease-linear data-closed:opacity-0"
         />
 
-        <div className="fixed inset-0 z-40 flex">
+        <div className="fixed inset-0 z-[999] flex">
           <DialogPanel
             transition
             className="relative ml-auto flex size-full max-w-xs transform flex-col overflow-y-auto bg-white pt-4 pb-6 shadow-xl transition duration-300 ease-in-out data-closed:translate-x-full"
           >
             <div className="flex items-center justify-between px-4">
-              <h2 className="text-lg font-medium text-gray-900">Filters</h2>
+              <h2 className="text-xl font-bold text-gray-900">Filters</h2>
               <button
                 type="button"
                 onClick={() => setMobileFiltersOpen(false)}
-                className="relative -mr-2 flex size-10 items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
+                className="relative -mr-2 flex size-10 items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:outline-hidden cursor-pointer"
               >
                 <span className="absolute -inset-0.5" />
                 <span className="sr-only">Close menu</span>
@@ -140,11 +140,11 @@ export default function Example() {
                       <span className="ml-6 flex items-center">
                         <PlusIcon
                           aria-hidden="true"
-                          className="size-5 group-data-open:hidden"
+                          className="size-5 group-data-open:hidden cursor-pointer"
                         />
                         <MinusIcon
                           aria-hidden="true"
-                          className="size-5 group-not-data-open:hidden"
+                          className="size-5 group-not-data-open:hidden cursor-pointer"
                         />
                       </span>
                     </DisclosureButton>
@@ -160,7 +160,7 @@ export default function Example() {
                                 id={`filter-mobile-${section.id}-${optionIdx}`}
                                 name={`${section.id}[]`}
                                 type="checkbox"
-                                className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
+                                className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto cursor-pointer"
                               />
                               <svg
                                 fill="none"
@@ -202,20 +202,30 @@ export default function Example() {
       </Dialog>
 
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex items-baseline justify-between border-b border-gray-200 pt-24 pb-6">
-          <div>
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900">
-              Your Wardrobe
-            </h1>
-            <p className="mt-1 text-sm/6 text-gray-600">
-              Here you can view and manage the items in your wardrobe.
-            </p>
+        <div className="pt-16 pb-6">
+          <h1 className="text-4xl font-bold tracking-tight text-gray-900">
+            Your Wardrobe
+          </h1>
+          <p className="mt-1 text-sm/6 text-gray-600">
+            Here you can view and manage the items in your wardrobe.
+          </p>
+        </div>
+        <div className="flex items-baseline justify-between border-b border-gray-200 pt-8 pb-6">
+          <div className="flex items-center">
+            <h2 className="text-black text-xl font-bold">Filters</h2>
+            <button
+              type="button"
+              onClick={() => setMobileFiltersOpen(true)}
+              className="-m-2 ml-1 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden"
+            >
+              <span className="sr-only">Filters</span>
+              <FunnelIcon aria-hidden="true" className="size-5" />
+            </button>
           </div>
-
           <div className="flex items-center">
             <Menu as="div" className="relative inline-block text-left">
               <div>
-                <MenuButton className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
+                <MenuButton className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900 cursor-pointer">
                   Sort
                   <ChevronDownIcon
                     aria-hidden="true"
@@ -250,18 +260,10 @@ export default function Example() {
 
             <button
               type="button"
-              className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7"
+              className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7 cursor-pointer"
             >
               <span className="sr-only">View grid</span>
               <Squares2X2Icon aria-hidden="true" className="size-5" />
-            </button>
-            <button
-              type="button"
-              onClick={() => setMobileFiltersOpen(true)}
-              className="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden"
-            >
-              <span className="sr-only">Filters</span>
-              <FunnelIcon aria-hidden="true" className="size-5" />
             </button>
           </div>
         </div>
@@ -300,11 +302,11 @@ export default function Example() {
                       <span className="ml-6 flex items-center">
                         <PlusIcon
                           aria-hidden="true"
-                          className="size-5 group-data-open:hidden"
+                          className="size-5 group-data-open:hidden cursor-pointer"
                         />
                         <MinusIcon
                           aria-hidden="true"
-                          className="size-5 group-not-data-open:hidden"
+                          className="size-5 group-not-data-open:hidden cursor-pointer"
                         />
                       </span>
                     </DisclosureButton>
@@ -321,7 +323,7 @@ export default function Example() {
                                 id={`filter-${section.id}-${optionIdx}`}
                                 name={`${section.id}[]`}
                                 type="checkbox"
-                                className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
+                                className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto cursor-pointer"
                               />
                               <svg
                                 fill="none"
