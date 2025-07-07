@@ -4,41 +4,20 @@ import Link from "next/link";
 import { useState } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
-export default function Register() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
+export default function ResetPassword() {
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   return (
     <>
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
-          Sign up for an account
+          Reset your password
         </h2>
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form action="#" method="POST" className="space-y-6">
-          {/* Name */}
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-sm/6 font-medium text-gray-900"
-            >
-              Name
-            </label>
-            <div className="mt-2">
-              <input
-                id="name"
-                name="name"
-                type="text"
-                placeholder="John Doe"
-                required
-                autoComplete="name"
-                className="block w-full rounded-md px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              />
-            </div>
-          </div>
-
           {/* Email */}
           <div>
             <label
@@ -60,28 +39,49 @@ export default function Register() {
             </div>
           </div>
 
-          {/* Password */}
+          {/* OTP */}
           <div>
             <label
-              htmlFor="password"
+              htmlFor="otp"
               className="block text-sm/6 font-medium text-gray-900"
             >
-              Password
+              OTP (6-digit code sent to your email)
+            </label>
+            <div className="mt-2">
+              <input
+                id="otp"
+                name="otp"
+                type="number"
+                placeholder="123456"
+                required
+                autoComplete="otp"
+                className="block w-full rounded-md px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+              />
+            </div>
+          </div>
+
+          {/* New Password */}
+          <div>
+            <label
+              htmlFor="new-password"
+              className="block text-sm/6 font-medium text-gray-900"
+            >
+              New Password
             </label>
             <div className="mt-2 relative">
               <input
-                id="password"
-                name="password"
-                type={showPassword ? "text" : "password"}
+                id="new-password"
+                name="new-password"
+                type={showNewPassword ? "text" : "password"}
                 required
                 autoComplete="new-password"
                 className="block w-full rounded-md px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
               <span
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-600"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                className="absolute inset-y-0 right-3 flex items-center text-gray-600 cursor-pointer"
               >
-                {showPassword ? (
+                {showNewPassword ? (
                   <EyeSlashIcon className="h-5 w-5" />
                 ) : (
                   <EyeIcon className="h-5 w-5" />
@@ -90,28 +90,28 @@ export default function Register() {
             </div>
           </div>
 
-          {/* Repeat Password */}
+          {/* Confirm Password */}
           <div>
             <label
-              htmlFor="repeatPassword"
+              htmlFor="confirm-password"
               className="block text-sm/6 font-medium text-gray-900"
             >
-              Repeat Password
+              Confirm Password
             </label>
             <div className="mt-2 relative">
               <input
-                id="repeatPassword"
-                name="repeatPassword"
-                type={showRepeatPassword ? "text" : "password"}
+                id="confirm-password"
+                name="confirm-password"
+                type={showConfirmPassword ? "text" : "password"}
                 required
-                autoComplete="new-password"
+                autoComplete="confirm-password"
                 className="block w-full rounded-md px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
               <span
-                onClick={() => setShowRepeatPassword(!showRepeatPassword)}
-                className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-600"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute inset-y-0 right-3 flex items-center text-gray-600 cursor-pointer"
               >
-                {showRepeatPassword ? (
+                {showConfirmPassword ? (
                   <EyeSlashIcon className="h-5 w-5" />
                 ) : (
                   <EyeIcon className="h-5 w-5" />
@@ -122,27 +122,16 @@ export default function Register() {
 
           {/* Submit Button */}
           <div>
-            <Link href="/verify-otp">
+            <Link href="/login">
               <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer"
               >
-                Sign up
+                Reset
               </button>
             </Link>
           </div>
         </form>
-
-        {/* Sign In Link */}
-        <p className="mt-10 text-center text-sm/6 text-gray-500">
-          Have an account?{" "}
-          <Link
-            href="/login"
-            className="font-semibold text-indigo-600 hover:text-indigo-500"
-          >
-            Sign in
-          </Link>
-        </p>
       </div>
     </>
   );

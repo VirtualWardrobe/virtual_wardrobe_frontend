@@ -2,11 +2,19 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import ForgotPassword from "../../components/ForgotPassword";
+import { useAuth } from "../../context/AuthContext";
+import Image from "next/image";
 
 export default function Login() {
-  const [isForgotPasswordOpen, setIsForgotPasswordOpen] =
-    useState<boolean>(false);
+  const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
+  const { login } = useAuth();
 
   const openForgotPasswordModal = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -15,6 +23,22 @@ export default function Login() {
 
   const closeForgotPasswordModal = () => {
     setIsForgotPasswordOpen(false);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (email === "admin@gmail.com" && password === "admin248") {
+      login();
+      router.push("/");
+    } else {
+      alert("Invalid credentials");
+    }
+  };
+
+  const handleGoogleLogin = () => {
+    alert("Google login clicked (replace with real handler)");
+    // You would normally integrate Firebase/Auth here
   };
 
   return (
@@ -26,7 +50,8 @@ export default function Login() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form action="#" method="POST" className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Email Field */}
           <div>
             <label
               htmlFor="email"
@@ -42,11 +67,14 @@ export default function Login() {
                 required
                 placeholder="johndoe@gmail.com"
                 autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="block w-full rounded-md px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
             </div>
           </div>
 
+          {/* Password Field with Toggle */}
           <div>
             <div className="flex items-center justify-between">
               <label
@@ -65,18 +93,32 @@ export default function Login() {
                 </a>
               </div>
             </div>
-            <div className="mt-2">
+
+            <div className="mt-2 relative">
               <input
                 id="password"
                 name="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 required
                 autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="block w-full rounded-md px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
+              <span
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-600"
+              >
+                {showPassword ? (
+                  <EyeSlashIcon className="h-5 w-5" />
+                ) : (
+                  <EyeIcon className="h-5 w-5" />
+                )}
+              </span>
             </div>
           </div>
 
+          {/* Submit Button */}
           <div>
             <button
               type="submit"
@@ -87,6 +129,35 @@ export default function Login() {
           </div>
         </form>
 
+        {/* OR Divider */}
+        <div className="relative my-6">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-300" />
+          </div>
+          <div className="relative flex justify-center text-sm/6">
+            <span className="bg-white px-2 text-gray-500">
+              or continue with
+            </span>
+          </div>
+        </div>
+
+        {/* Google Login Button */}
+        <div>
+          <button
+            onClick={handleGoogleLogin}
+            className="flex w-full items-center justify-center gap-3 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm/6 font-semibold text-gray-700 shadow-sm hover:bg-gray-50 transition cursor-pointer"
+          >
+            <Image
+              src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+              alt="Google"
+              width={20}
+              height={20}
+            />
+            Sign in with Google
+          </button>
+        </div>
+
+        {/* Sign Up Link */}
         <p className="mt-10 text-center text-sm/6 text-gray-500">
           Don&apos;t have an account?{" "}
           <Link
@@ -98,6 +169,7 @@ export default function Login() {
         </p>
       </div>
 
+      {/* Forgot Password Modal */}
       <ForgotPassword
         isOpen={isForgotPasswordOpen}
         onClose={closeForgotPasswordModal}

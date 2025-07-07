@@ -7,6 +7,7 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 interface ForgotPasswordProps {
   isOpen: boolean;
@@ -47,8 +48,8 @@ export default function ForgotPassword({
                   </DialogTitle>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">
-                      Enter your email address below and we&apos;ll send you a
-                      link to reset your password.
+                      Enter your email address below and we&apos;ll send you an
+                      OTP to reset your password.
                     </p>
                     <div className="mt-4">
                       <label htmlFor="email-reset" className="sr-only">
@@ -69,13 +70,16 @@ export default function ForgotPassword({
               </div>
             </div>
             <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-              <button
-                type="button"
-                onClick={onClose}
-                className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 sm:ml-3 sm:w-auto cursor-pointer"
-              >
-                Send Reset Link
-              </button>
+              <Link href={"/reset-password"}>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 sm:ml-3 sm:w-auto cursor-pointer"
+                >
+                  Send OTP
+                </button>
+              </Link>
+
               <button
                 type="button"
                 data-autofocus
