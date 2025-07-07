@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogBackdrop,
@@ -81,6 +81,30 @@ function classNames(
 
 export default function Wardrobe() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken);
+  }, []);
+
+  if (token === null) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <p className="text-xl text-gray-700">Loading...</p>
+      </div>
+    );
+  }
+
+  if (!token) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <p className="text-xl text-gray-700">
+          Please log in to view your wardrobe.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div>
