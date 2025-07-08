@@ -77,7 +77,16 @@ export default function Profile() {
               Phone Number
             </dt>
             <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">
-              {user.phone_number}
+              {user.phone_number ? (
+                user.phone_number
+              ) : (
+                <div>
+                  <ExclamationTriangleIcon className="inline-block h-5 w-5 text-yellow-500" />
+                  <span className="ml-2 text-sm/6 text-gray-500">
+                    Not provided
+                  </span>
+                </div>
+              )}
             </dd>
           </div>
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
