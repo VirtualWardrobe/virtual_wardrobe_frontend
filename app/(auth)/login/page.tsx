@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import ForgotPassword from "../../components/ForgotPassword";
 import { useAuth } from "../../context/AuthContext";
+import { useUser } from "../../context/UserContext";
 import Image from "next/image";
 
 export default function Login() {
@@ -15,6 +16,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const router = useRouter();
   const { login } = useAuth();
+  const { fetchUserData } = useUser();
 
   const openForgotPasswordModal = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -25,20 +27,51 @@ export default function Login() {
     setIsForgotPasswordOpen(false);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (email === "admin@gmail.com" && password === "admin248") {
-      login();
-      router.push("/");
-    } else {
-      alert("Invalid credentials");
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        }
+      );
+      const data = await response.json();
+      if (data.success) {
+        login(data.data.access_token);
+        await fetchUserData();
+        router.push("/");
+      } else {
+        alert(data.detail);
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("An error occurred while logging in. Please try again.");
     }
   };
 
-  const handleGoogleLogin = () => {
-    alert("Google login clicked (replace with real handler)");
-    // You would normally integrate Firebase/Auth here
+  const handleGoogleLogin = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/google/login`
+      );
+      const data = await response.json();
+
+      if (data.success && data.data?.google_auth_url) {
+        window.location.href = data.data.google_auth_url;
+      } else {
+        throw new Error("Failed to retrieve Google login URL.");
+      }
+    } catch (error) {
+      console.error("Google login error:", error);
+      alert(
+        "An error occurred while logging in with Google. Please try again."
+      );
+    }
   };
 
   return (
@@ -51,7 +84,6 @@ export default function Login() {
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Email Field */}
           <div>
             <label
               htmlFor="email"
@@ -74,7 +106,6 @@ export default function Login() {
             </div>
           </div>
 
-          {/* Password Field with Toggle */}
           <div>
             <div className="flex items-center justify-between">
               <label
@@ -118,7 +149,6 @@ export default function Login() {
             </div>
           </div>
 
-          {/* Submit Button */}
           <div>
             <button
               type="submit"
@@ -129,7 +159,6 @@ export default function Login() {
           </div>
         </form>
 
-        {/* OR Divider */}
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-300" />
@@ -141,7 +170,6 @@ export default function Login() {
           </div>
         </div>
 
-        {/* Google Login Button */}
         <div>
           <button
             onClick={handleGoogleLogin}
@@ -157,7 +185,6 @@ export default function Login() {
           </button>
         </div>
 
-        {/* Sign Up Link */}
         <p className="mt-10 text-center text-sm/6 text-gray-500">
           Don&apos;t have an account?{" "}
           <Link
@@ -169,7 +196,6 @@ export default function Login() {
         </p>
       </div>
 
-      {/* Forgot Password Modal */}
       <ForgotPassword
         isOpen={isForgotPasswordOpen}
         onClose={closeForgotPasswordModal}

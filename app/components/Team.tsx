@@ -1,29 +1,9 @@
 import Image from "next/image";
 
-const people = [
-  {
-    name: "Anirudh P S",
-    role: "Member 1",
-    imageUrl:
-      "https://virtual-wardrobe-s3.s3.ap-southeast-2.amazonaws.com/assets/img/team/Anirudh.jpg",
-  },
-  {
-    name: "Akilesh S",
-    role: "Member 2",
-    imageUrl:
-      "https://virtual-wardrobe-s3.s3.ap-southeast-2.amazonaws.com/assets/img/team/Akilesh.jpg",
-  },
-  {
-    name: "Aaryan P Shreyas",
-    role: "Member 3",
-    imageUrl:
-      "https://virtual-wardrobe-s3.s3.ap-southeast-2.amazonaws.com/assets/img/team/Aaryan.jpg",
-  },
-];
-
 export default function Team() {
   return (
-    <section className="relative isolate bg-white px-6 pt-16 pb-16 sm:pt-24 sm:pb-24 lg:px-8">
+    <section className="relative isolate bg-white px-6 pt-20 pb-24 sm:pt-32 sm:pb-32 lg:px-8">
+      {/* Background shapes */}
       <div
         aria-hidden="true"
         className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -37,46 +17,42 @@ export default function Team() {
         />
       </div>
 
-      <div className="mx-auto grid max-w-2xl gap-y-16 gap-x-8 xl:max-w-7xl xl:grid-cols-3 xl:gap-x-16 xl:gap-y-24">
-        <div className="max-w-xl text-center mx-auto xl:mx-0 xl:text-left xl:max-w-none">
-          <h2 className="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
-            Meet our Team
-          </h2>
-          <p className="mt-8 text-lg leading-8 text-gray-600">
-            We&apos;re a dynamic group of individuals who are passionate about
-            what we do and dedicated to delivering the best results for our
-            users.
-          </p>
-        </div>
-
-        <ul
-          role="list"
-          className="grid gap-x-8 gap-y-12 sm:grid-cols-2 sm:gap-y-16 xl:col-span-2"
-        >
-          {people.map((person) => (
-            <li key={person.name}>
-              <div className="flex items-center gap-x-6">
-                <Image
-                  alt={person.name}
-                  src={person.imageUrl}
-                  width={64}
-                  height={64}
-                  className="size-16 rounded-full"
-                />
-                <div>
-                  <h3 className="text-base font-semibold leading-7 text-gray-900">
-                    {person.name}
-                  </h3>
-                  <p className="text-sm font-semibold leading-6 text-indigo-600">
-                    {person.role}
-                  </p>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
+      <div className="mx-auto max-w-3xl text-center">
+        <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+          Meet the Creator
+        </h2>
+        <p className="mt-6 text-lg leading-8 text-gray-600">
+          I&apos;m Anirudh P S — the mind behind Virtual Wardrobe. I&apos;m
+          passionate about building intuitive and innovative experiences that
+          help people stay stylish and organized.
+        </p>
       </div>
 
+      <div className="mt-12 flex justify-center">
+        <div className="text-center">
+          <Image
+            src="https://storage.googleapis.com/vw-media-bucket/Anirudh.jpg"
+            alt="Anirudh P S"
+            width={128}
+            height={128}
+            className="aspect-square w-32 rounded-full object-cover object-top mx-auto shadow-lg ring-2 ring-indigo-500"
+            unoptimized
+          />
+          <h3 className="mt-4 text-xl font-semibold text-gray-900">
+            Anirudh P S
+          </h3>
+          <p className="text-indigo-600 text-sm font-medium mt-1">
+            Creator & Developer
+          </p>
+          <p className="mt-3 text-sm text-gray-600 max-w-md mx-auto">
+            With a blend of creativity and engineering, I&apos;ve built this
+            platform to help users manage their wardrobes effortlessly while
+            embracing minimalism.
+          </p>
+        </div>
+      </div>
+
+      {/* Bottom background shape */}
       <div
         aria-hidden="true"
         className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"

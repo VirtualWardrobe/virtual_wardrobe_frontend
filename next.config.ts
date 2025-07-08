@@ -18,6 +18,21 @@ const nextConfig: NextConfig = {
         hostname: "virtual-wardrobe-s3.s3.ap-southeast-2.amazonaws.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "v3.fal.media",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "storage.googleapis.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn-icons-png.flaticon.com",
+        pathname: "/**",
+      },
     ],
   },
 };
