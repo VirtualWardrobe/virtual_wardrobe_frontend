@@ -15,11 +15,6 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "virtual-wardrobe-s3.s3.ap-southeast-2.amazonaws.com",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
         hostname: "v3.fal.media",
         pathname: "/**",
       },
@@ -31,6 +26,11 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "cdn-icons-png.flaticon.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "dummyimage.com",
         pathname: "/**",
       },
     ],

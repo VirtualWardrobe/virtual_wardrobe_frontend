@@ -27,7 +27,7 @@ export default function VirtualTryOnHistory() {
         Here are the clothes you have tried on virtually.
       </p>
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-3">
         {results.map((result) => (
           <div
             key={result.id}
@@ -46,7 +46,7 @@ export default function VirtualTryOnHistory() {
                     className="h-full w-full object-cover object-center"
                   />
                 </div>
-                <p className="mt-2 text-sm text-gray-600">Original Image</p>
+                <p className="mt-2 text-sm text-gray-600">Original</p>
               </div>
 
               {/* Garment Image */}
@@ -60,7 +60,7 @@ export default function VirtualTryOnHistory() {
                     className="h-full w-full object-cover object-center"
                   />
                 </div>
-                <p className="mt-2 text-sm text-gray-600">Garment Image</p>
+                <p className="mt-2 text-sm text-gray-600">Garment</p>
               </div>
             </div>
 
@@ -76,7 +76,7 @@ export default function VirtualTryOnHistory() {
                   unoptimized
                 />
               </div>
-              <p className="mt-2 text-sm text-gray-600">Result Image</p>
+              <p className="mt-2 text-sm text-gray-600">Result</p>
             </div>
 
             {/* Date below full row */}

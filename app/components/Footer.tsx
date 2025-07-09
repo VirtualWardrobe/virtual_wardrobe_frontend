@@ -19,10 +19,10 @@ export default function Footer() {
               <Link href={"/"} className="-m-1.5 p-1.5">
                 <Image
                   alt="Logo"
-                  src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-                  width={32}
-                  height={32}
-                  className="h-8 w-auto"
+                  src="https://storage.googleapis.com/vw-media-bucket/vw-logo-3.png"
+                  width={150}
+                  height={150}
+                  unoptimized
                 />
               </Link>
             </div>
