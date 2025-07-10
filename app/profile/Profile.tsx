@@ -28,7 +28,7 @@ export default function Profile() {
   const deleteAccount = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/user/`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/user`,
         {
           method: "DELETE",
           headers: {
