@@ -18,6 +18,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
+import Loader from "../components/Loader";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -28,12 +29,23 @@ const navigation = [
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { isLoggedIn, logout } = useAuth();
 
+  const handleNavigate = async (href: string) => {
+    try {
+      setLoading(true);
+      await router.push(href);
+    } finally {
+      setMobileMenuOpen(false);
+      setTimeout(() => setLoading(false), 500); // add a short delay to prevent flash
+    }
+  };
+
   const handleLogout = () => {
     logout();
-    router.push("/");
+    handleNavigate("/");
   };
 
   return (
@@ -54,7 +66,6 @@ export default function Header() {
           </Link>
         </div>
 
-        {/* Mobile menu toggle */}
         <div className="flex lg:hidden">
           <button
             type="button"
@@ -66,20 +77,18 @@ export default function Header() {
           </button>
         </div>
 
-        {/* Desktop nav links */}
         <div className="hidden lg:flex lg:gap-x-12">
           {navigation.map((item) => (
-            <Link
+            <button
               key={item.name}
-              href={item.href}
+              onClick={() => handleNavigate(item.href)}
               className="text-sm font-semibold text-gray-900"
             >
               {item.name}
-            </Link>
+            </button>
           ))}
         </div>
 
-        {/* Desktop user actions */}
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           {isLoggedIn ? (
             <Menu as="div" className="relative">
@@ -93,7 +102,7 @@ export default function Header() {
                 <div className="py-1">
                   <MenuItem
                     as="button"
-                    onClick={() => router.push("/profile")}
+                    onClick={() => handleNavigate("/profile")}
                     className={({ focus }) =>
                       `w-full text-left text-black px-4 py-2 text-sm cursor-pointer ${
                         focus ? "bg-gray-100" : ""
@@ -117,17 +126,16 @@ export default function Header() {
               </MenuItems>
             </Menu>
           ) : (
-            <Link
-              href="/login"
+            <button
+              onClick={() => handleNavigate("/login")}
               className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold text-gray-900 hover:bg-gray-50"
             >
               Log in <span aria-hidden="true">&rarr;</span>
-            </Link>
+            </button>
           )}
         </div>
       </nav>
 
-      {/* Mobile menu */}
       <Dialog
         open={mobileMenuOpen}
         onClose={setMobileMenuOpen}
@@ -139,9 +147,9 @@ export default function Header() {
             <Link href="/" className="-m-1.5 p-1.5">
               <Image
                 alt="Logo"
-                src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-                width={32}
-                height={32}
+                src="https://storage.googleapis.com/vw-media-bucket/vw-logo-3.png"
+                width={50}
+                height={50}
                 className="h-8 w-auto"
               />
             </Link>
@@ -158,13 +166,13 @@ export default function Header() {
             <div className="-my-6 divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
                 {navigation.map((item) => (
-                  <Link
+                  <button
                     key={item.name}
-                    href={item.href}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50"
+                    onClick={() => handleNavigate(item.href)}
+                    className="-mx-3 block w-full text-left rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50"
                   >
                     {item.name}
-                  </Link>
+                  </button>
                 ))}
               </div>
 
@@ -172,38 +180,33 @@ export default function Header() {
                 {isLoggedIn ? (
                   <>
                     <button
-                      onClick={() => {
-                        setMobileMenuOpen(false);
-                        router.push("/profile");
-                      }}
-                      className="-mx-3 block w-full text-left px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50 cursor-pointer"
+                      onClick={() => handleNavigate("/profile")}
+                      className="-mx-3 block w-full text-left px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50"
                     >
                       Profile
                     </button>
                     <button
-                      onClick={() => {
-                        handleLogout();
-                        setMobileMenuOpen(false);
-                      }}
-                      className="-mx-3 block w-full text-left px-3 py-2 text-base font-semibold text-red-600 hover:bg-gray-50 cursor-pointer"
+                      onClick={() => handleLogout()}
+                      className="-mx-3 block w-full text-left px-3 py-2 text-base font-semibold text-red-600 hover:bg-gray-50"
                     >
                       Logout
                     </button>
                   </>
                 ) : (
-                  <Link
-                    href="/login"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold text-gray-900 hover:bg-gray-50"
+                  <button
+                    onClick={() => handleNavigate("/login")}
+                    className="-mx-3 block w-full text-left rounded-lg px-3 py-2.5 text-base font-semibold text-gray-900 hover:bg-gray-50"
                   >
                     Log in <span aria-hidden="true">&rarr;</span>
-                  </Link>
+                  </button>
                 )}
               </div>
             </div>
           </div>
         </DialogPanel>
       </Dialog>
+
+      {loading && <Loader />}
     </header>
   );
 }

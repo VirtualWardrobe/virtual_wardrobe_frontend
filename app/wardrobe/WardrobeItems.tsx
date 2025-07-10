@@ -84,13 +84,12 @@ export default function WardrobeItems() {
     str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
   const formatDate = (dateString: string) =>
-    new Date(dateString).toLocaleString("en-US", {
+    new Date(dateString).toLocaleString("en-GB", {
       dateStyle: "medium",
-      timeStyle: "short",
     });
 
   return (
-    <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+    <div className="mx-auto max-w-2xl lg:max-w-7xl lg:px-4">
       <div className="mb-6 flex items-center justify-center gap-x-6">
         <Link
           href="/add-item"
@@ -99,7 +98,7 @@ export default function WardrobeItems() {
           Add Item
         </Link>
       </div>
-      <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
+      <div className="grid grid-cols-2 gap-x-2 gap-y-2 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-4 xl:gap-x-8">
         {products.map((product) => (
           <div
             key={product.id}

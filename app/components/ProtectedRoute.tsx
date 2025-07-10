@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Loader from "../components/Loader";
 
 export default function ProtectedRoute({
   children,
@@ -25,12 +26,7 @@ export default function ProtectedRoute({
   }, [router]);
 
   if (loading || !authorized) {
-    return (
-      <div className="flex h-screen flex-col items-center justify-center">
-        <div className="size-12 animate-spin rounded-full border-4 border-indigo-500 border-t-transparent" />
-        <p className="text-xl text-gray-700 mt-4">Loading...</p>
-      </div>
-    );
+    return <Loader />;
   }
 
   return <>{children}</>;
