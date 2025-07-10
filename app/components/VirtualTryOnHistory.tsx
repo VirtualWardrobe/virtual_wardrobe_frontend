@@ -73,7 +73,6 @@ export default function VirtualTryOnHistory() {
                   width={600}
                   height={600}
                   className="h-full w-full object-cover object-center"
-                  unoptimized
                 />
               </div>
               <p className="mt-2 text-sm text-gray-600">Result</p>
