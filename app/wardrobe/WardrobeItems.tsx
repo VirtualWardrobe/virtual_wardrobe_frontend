@@ -90,67 +90,80 @@ export default function WardrobeItems() {
 
   return (
     <div className="mx-auto max-w-2xl lg:max-w-7xl lg:px-4">
-      <div className="mb-6 flex items-center justify-center gap-x-6">
+      <div className="mb-6 flex items-center justify-center gap-x-4">
         <Link
           href="/add-item"
-          className="w-full text-center rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          className="w-1/2 text-center rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
-          Add Item
+          Add Item to Wardrobe
+        </Link>
+        <Link
+          href="/virtual-tryon"
+          className="w-1/2 text-center rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          View your Virtual Try-ons
         </Link>
       </div>
-      <div className="grid grid-cols-2 gap-x-2 gap-y-2 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-4 xl:gap-x-8">
-        {products.map((product) => (
-          <div
-            key={product.id}
-            className="group relative border p-2 rounded-lg shadow-sm"
-          >
-            <Image
-              alt={`Image of a ${product.category.toLowerCase()} from ${
-                product.brand
-              }`}
-              src={
-                product.image_url
-                  ? product.image_url
-                  : "https://dummyimage.com/300x600/cccccc/000000&text=No+Image+Uploaded"
-              }
-              className="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:h-80"
-              width={200}
-              height={200}
-            />
-            <h3 className="text-lg font-semibold text-gray-800 mt-2">
-              {product.brand} {capitalize(product.category)}
-            </h3>
-            <p className="text-sm text-gray-600">
-              <span className="font-medium">Type:</span>{" "}
-              {capitalize(product.type)}
-            </p>
-            <p className="text-sm text-gray-600">
-              <span className="font-medium">Color:</span>{" "}
-              {capitalize(product.color)}
-            </p>
-            <p className="text-sm text-gray-600">
-              <span className="font-medium">Size:</span>{" "}
-              {product.size.toUpperCase()}
-            </p>
-            <p className="text-sm text-gray-600">
-              <span className="font-medium">Added:</span>{" "}
-              {formatDate(product.created_at)}
-            </p>
 
-            <button
-              onClick={() => handleDelete(product.id)}
-              disabled={loadingId === product.id}
-              className={`mt-3 text-sm px-3 py-1.5 rounded-md font-semibold shadow-sm ${
-                loadingId === product.id
-                  ? "bg-gray-400 text-white cursor-not-allowed"
-                  : "bg-red-600 text-white hover:bg-red-500"
-              }`}
+      {products.length === 0 ? (
+        <div className="text-center text-gray-500 text-lg py-8">
+          You have no wardrobe items yet.
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 gap-x-2 gap-y-2 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-4 xl:gap-x-8">
+          {products.map((product) => (
+            <div
+              key={product.id}
+              className="group relative border p-2 rounded-lg shadow-sm"
             >
-              {loadingId === product.id ? "Deleting..." : "Delete"}
-            </button>
-          </div>
-        ))}
-      </div>
+              <Image
+                alt={`Image of a ${product.category.toLowerCase()} from ${
+                  product.brand
+                }`}
+                src={
+                  product.image_url
+                    ? product.image_url
+                    : "https://dummyimage.com/300x600/cccccc/000000&text=No+Image+Uploaded"
+                }
+                className="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:h-80"
+                width={200}
+                height={200}
+              />
+              <h3 className="text-lg font-semibold text-gray-800 mt-2">
+                {product.brand} {capitalize(product.category)}
+              </h3>
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Type:</span>{" "}
+                {capitalize(product.type)}
+              </p>
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Color:</span>{" "}
+                {capitalize(product.color)}
+              </p>
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Size:</span>{" "}
+                {product.size.toUpperCase()}
+              </p>
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Added:</span>{" "}
+                {formatDate(product.created_at)}
+              </p>
+
+              <button
+                onClick={() => handleDelete(product.id)}
+                disabled={loadingId === product.id}
+                className={`mt-3 text-sm px-3 py-1.5 rounded-md font-semibold shadow-sm ${
+                  loadingId === product.id
+                    ? "bg-gray-400 text-white cursor-not-allowed"
+                    : "bg-red-600 text-white hover:bg-red-500"
+                }`}
+              >
+                {loadingId === product.id ? "Deleting..." : "Delete"}
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

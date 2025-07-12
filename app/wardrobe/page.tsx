@@ -85,7 +85,7 @@ export default function Wardrobe() {
 
   return (
     <ProtectedRoute>
-      <div>
+      <div className="w-full">
         {/* Mobile filter dialog */}
         <Dialog
           open={mobileFiltersOpen}

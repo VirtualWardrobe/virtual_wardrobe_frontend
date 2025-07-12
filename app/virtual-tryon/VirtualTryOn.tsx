@@ -1,12 +1,65 @@
+"use client";
+
 import Image from "next/image";
-import { useUser } from "../context/UserContext";
-import Link from "next/link";
+import { useState, useEffect } from "react";
+import Loader from "../components/Loader";
+
+interface TryOnResult {
+  id: string | number;
+  human_image_url: string;
+  garment_image_url: string;
+  result_image_url: string;
+  created_at: string;
+}
 
 export default function VirtualTryOnHistory() {
-  const { user } = useUser();
-  const results = user?.VirtualTryOn || [];
+  const [results, setResults] = useState<TryOnResult[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  if (!user || results.length === 0) {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/virtual-tryon`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        if (data.success) {
+          setResults(data.data.items);
+        } else {
+          alert(data.detail);
+        }
+      } catch (error) {
+        console.error("Error fetching virtual try-on history:", error);
+        alert(
+          "An error occurred while fetching your virtual try-on history. Please try again later."
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (results.length === 0) {
     return (
       <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
         <dt className="text-sm/6 font-medium text-gray-900">
@@ -20,13 +73,23 @@ export default function VirtualTryOnHistory() {
   }
 
   return (
-    <div className="mt-8 px-4 sm:px-0">
-      <h3 className="text-2xl font-semibold text-gray-900">
-        Virtual Try-on History
-      </h3>
-      <p className="mt-1 max-w-2xl text-sm text-gray-500 mb-6">
-        Here are the clothes you have tried on virtually.
-      </p>
+    <div className="mt-16 px-4 sm:px-0">
+      <div className="flex items-start justify-between">
+        <div>
+          <h3 className="text-2xl font-semibold text-gray-900">
+            Virtual Try-on History
+          </h3>
+          <p className="mt-1 max-w-2xl text-sm text-gray-500 mb-6">
+            Here are the clothes you have tried on virtually.
+          </p>
+        </div>
+
+        <div className="flex gap-2 ml-auto">
+          <button className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 cursor-pointer">
+            Conduct New Try-On
+          </button>
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-3">
         {results.map((result) => (
@@ -89,15 +152,6 @@ export default function VirtualTryOnHistory() {
             </div>
           </div>
         ))}
-      </div>
-      <div className="flex justify-center mt-8">
-        <Link
-          href={"/virtual-tryon"}
-          scroll={true}
-          className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          View more...
-        </Link>
       </div>
     </div>
   );

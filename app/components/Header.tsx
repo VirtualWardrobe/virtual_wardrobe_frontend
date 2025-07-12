@@ -39,7 +39,7 @@ export default function Header() {
       await router.push(href);
     } finally {
       setMobileMenuOpen(false);
-      setTimeout(() => setLoading(false), 500); // add a short delay to prevent flash
+      setTimeout(() => setLoading(false), 500);
     }
   };
 
@@ -82,7 +82,7 @@ export default function Header() {
             <button
               key={item.name}
               onClick={() => handleNavigate(item.href)}
-              className="text-sm font-semibold text-gray-900"
+              className="text-sm font-semibold text-gray-900 cursor-pointer"
             >
               {item.name}
             </button>
@@ -128,7 +128,7 @@ export default function Header() {
           ) : (
             <button
               onClick={() => handleNavigate("/login")}
-              className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold text-gray-900 hover:bg-gray-50"
+              className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold text-gray-900 hover:bg-gray-50 cursor-pointer"
             >
               Log in <span aria-hidden="true">&rarr;</span>
             </button>

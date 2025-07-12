@@ -14,6 +14,7 @@ import React, {
 export default function VerifyOtp(): JSX.Element {
   const [otp, setOtp] = useState<string[]>(Array(6).fill(""));
   const [error, setError] = useState<string>("");
+  const [resendTimer, setResendTimer] = useState<number>(20);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -22,6 +23,16 @@ export default function VerifyOtp(): JSX.Element {
   useEffect(() => {
     inputRefs.current = inputRefs.current.slice(0, 6);
   }, []);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (resendTimer > 0) {
+      timer = setTimeout(() => {
+        setResendTimer((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [resendTimer]);
 
   const handleChange = (element: HTMLInputElement, index: number): void => {
     if (isNaN(Number(element.value))) return;
@@ -72,13 +83,11 @@ export default function VerifyOtp(): JSX.Element {
 
     const fullOtp = otp.join("");
 
-    // Check for 6 digits
     if (fullOtp.length !== 6) {
       setError("Please enter a 6-digit OTP.");
       return;
     }
 
-    // Ensure sessionId and OTP are strings
     if (!sessionId || typeof sessionId !== "string") {
       setError("Session ID not found in URL.");
       return;
@@ -112,9 +121,35 @@ export default function VerifyOtp(): JSX.Element {
     }
   };
 
-  const handleResendOtp = (e: React.MouseEvent<HTMLAnchorElement>): void => {
+  const handleResendOtp = async (
+    e: React.MouseEvent<HTMLAnchorElement>
+  ): Promise<void> => {
     e.preventDefault();
-    alert("OTP has been resent! (This is a placeholder action)");
+
+    if (resendTimer > 0 || !sessionId) return;
+
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/resend-otp?session_id=${sessionId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await res.json();
+      if (data.success) {
+        setError("");
+        alert(data.message || "OTP resent successfully!");
+        setResendTimer(20);
+      } else {
+        throw new Error(data.message || "Failed to resend OTP");
+      }
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Failed to resend OTP.");
+    }
   };
 
   return (
@@ -175,9 +210,13 @@ export default function VerifyOtp(): JSX.Element {
             <a
               href="#"
               onClick={handleResendOtp}
-              className="font-semibold text-indigo-600 hover:text-indigo-500 cursor-pointer"
+              className={`font-semibold ${
+                resendTimer > 0
+                  ? "text-gray-400 cursor-not-allowed"
+                  : "text-indigo-600 hover:text-indigo-500"
+              }`}
             >
-              Resend OTP
+              {resendTimer > 0 ? `Resend OTP in ${resendTimer}s` : "Resend OTP"}
             </a>
           </p>
         </form>

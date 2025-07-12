@@ -23,6 +23,7 @@ export default function Profile() {
 
   useEffect(() => {
     fetchUserData();
+    window.scrollTo(0, 0);
   }, [fetchUserData]);
 
   const deleteAccount = async () => {

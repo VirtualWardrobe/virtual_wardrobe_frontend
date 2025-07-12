@@ -3,10 +3,52 @@
 import Link from "next/link";
 import { useState } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { useRouter } from "next/navigation";
 
 export default function ResetPassword() {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      if (newPassword !== confirmPassword) {
+        alert("Passwords do not match.");
+        return;
+      }
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/reset-password`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            otp,
+            new_password: newPassword,
+          }),
+        }
+      );
+      const data = await response.json();
+      if (data.success) {
+        alert("Password reset successfully. You can now log in.");
+        router.push("/login");
+      } else {
+        alert(data.detail || "Failed to reset password.");
+      }
+    } catch (error) {
+      console.error("Error resetting password:", error);
+      alert("Failed to reset password. Please try again later.");
+    }
+  };
 
   return (
     <>
@@ -33,6 +75,8 @@ export default function ResetPassword() {
                 type="email"
                 placeholder="johndoe@gmail.com"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 autoComplete="email"
                 className="block w-full rounded-md px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
@@ -54,6 +98,8 @@ export default function ResetPassword() {
                 type="number"
                 placeholder="123456"
                 required
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
                 autoComplete="otp"
                 className="block w-full rounded-md px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
@@ -74,6 +120,8 @@ export default function ResetPassword() {
                 name="new-password"
                 type={showNewPassword ? "text" : "password"}
                 required
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
                 autoComplete="new-password"
                 className="block w-full rounded-md px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
@@ -104,6 +152,8 @@ export default function ResetPassword() {
                 name="confirm-password"
                 type={showConfirmPassword ? "text" : "password"}
                 required
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 autoComplete="confirm-password"
                 className="block w-full rounded-md px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
@@ -125,6 +175,7 @@ export default function ResetPassword() {
             <Link href="/login">
               <button
                 type="submit"
+                onClick={handleSubmit}
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer"
               >
                 Reset

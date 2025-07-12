@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   Dialog,
   DialogBackdrop,
@@ -7,7 +8,6 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
-import Link from "next/link";
 
 interface ForgotPasswordProps {
   isOpen: boolean;
@@ -18,6 +18,32 @@ export default function ForgotPassword({
   isOpen,
   onClose,
 }: ForgotPasswordProps) {
+  const [email, setEmail] = useState("");
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/forgot-password/${email}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      if (data.success) {
+        const sessionId = data.data.session_id;
+        window.location.href = `/reset-password?sessionId=${sessionId}`;
+      } else {
+        alert(data.detail || "Failed to send OTP.");
+      }
+    } catch (error) {
+      console.error("Error sending OTP:", error);
+      alert("Failed to send OTP. Please try again later.");
+    }
+  };
+
   return (
     <Dialog open={isOpen} onClose={onClose} className="relative z-10">
       <DialogBackdrop
@@ -61,8 +87,10 @@ export default function ForgotPassword({
                         type="email"
                         autoComplete="email"
                         required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         className="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
-                        placeholder="you@example.com"
+                        placeholder="johndoe@gmail.com"
                       />
                     </div>
                   </div>
@@ -70,15 +98,13 @@ export default function ForgotPassword({
               </div>
             </div>
             <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-              <Link href={"/reset-password"}>
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 sm:ml-3 sm:w-auto cursor-pointer"
-                >
-                  Send OTP
-                </button>
-              </Link>
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 sm:ml-3 sm:w-auto cursor-pointer"
+              >
+                Send OTP
+              </button>
 
               <button
                 type="button"
