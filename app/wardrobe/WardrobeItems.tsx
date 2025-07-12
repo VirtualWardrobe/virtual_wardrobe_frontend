@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import Loader from "../components/Loader";
 
 interface WardrobeItem {
   id: string;
@@ -18,6 +19,7 @@ interface WardrobeItem {
 export default function WardrobeItems() {
   const [products, setProducts] = useState<WardrobeItem[]>([]);
   const [loadingId, setLoadingId] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const fetchProducts = async () => {
     try {
@@ -40,6 +42,8 @@ export default function WardrobeItems() {
     } catch (error) {
       console.error("Error fetching items:", error);
       alert("An error occurred while fetching items. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -87,6 +91,14 @@ export default function WardrobeItems() {
     new Date(dateString).toLocaleString("en-GB", {
       dateStyle: "medium",
     });
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-2xl lg:max-w-7xl lg:px-4">
