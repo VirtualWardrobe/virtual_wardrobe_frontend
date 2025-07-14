@@ -48,15 +48,7 @@ export default function WardrobeItems() {
   };
 
   useEffect(() => {
-    const run = async () => {
-      try {
-        await fetchProducts();
-      } catch (err) {
-        console.error("Unhandled fetch error", err);
-      }
-    };
-
-    run();
+    void fetchProducts();
   }, []);
 
   const handleDelete = async (id: string) => {

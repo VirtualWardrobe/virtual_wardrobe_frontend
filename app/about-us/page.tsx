@@ -104,7 +104,7 @@ export default function Example() {
               <h2 className="mt-16 text-2xl font-bold tracking-tight text-gray-900">
                 Empower Your Wardrobe with Sustainable Fashion Insights
               </h2>
-              <ul role="list" className="mt-8 space-y-8 text-gray-600">
+              <ul className="mt-8 space-y-8 text-gray-600">
                 <li className="flex gap-x-3">
                   <ChartBarIcon
                     aria-hidden="true"

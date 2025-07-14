@@ -62,7 +62,10 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       if (data.success) {
         setUser(data.data);
       } else {
-        console.error("Failed to fetch user data:", data.detail);
+        console.error(
+          "Failed to delete account:",
+          JSON.stringify(data.detail || "No details provided")
+        );
         setUser(null);
       }
     } catch (error) {

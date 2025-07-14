@@ -43,7 +43,10 @@ export default function Profile() {
         localStorage.removeItem("token");
         setIsDeletedModalOpen(true);
       } else {
-        console.error("Failed to delete account:", data.detail);
+        console.error(
+          "Failed to delete account:",
+          JSON.stringify(data.detail || "No details provided")
+        );
       }
     } catch (error) {
       console.error("Error deleting account:", error);

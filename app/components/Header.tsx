@@ -46,7 +46,7 @@ export default function Header() {
   const handleLogout = async () => {
     try {
       await logout();
-      handleNavigate("/");
+      await handleNavigate("/");
     } catch (error) {
       console.error("Logout failed:", error);
       alert("Failed to log out. Please try again.");
