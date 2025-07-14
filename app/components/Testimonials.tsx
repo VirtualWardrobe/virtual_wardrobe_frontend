@@ -49,8 +49,8 @@ export default function Testimonials() {
   const [currentTestimonialIndex, setCurrentTestimonialIndex] =
     useState<number>(0);
   const [isFading, setIsFading] = useState<boolean>(false);
-  const intervalTime: number = 4000;
-  const fadeDuration: number = 300;
+  const intervalTime = 4000;
+  const fadeDuration = 300;
 
   const handleDotClick = (index: number): void => {
     if (index === currentTestimonialIndex) return;

@@ -260,9 +260,14 @@ export default function Profile() {
                 Cancel
               </button>
               <button
-                onClick={() => {
-                  deleteAccount();
-                  setIsModalOpen(false);
+                onClick={async () => {
+                  try {
+                    await deleteAccount(); // Ensure delete finishes before closing modal
+                    setIsModalOpen(false);
+                  } catch (err) {
+                    console.error("Account deletion failed:", err);
+                    alert("Failed to delete account. Please try again.");
+                  }
                 }}
                 className="rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-500"
               >

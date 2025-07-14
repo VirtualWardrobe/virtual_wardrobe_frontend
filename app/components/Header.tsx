@@ -43,9 +43,14 @@ export default function Header() {
     }
   };
 
-  const handleLogout = () => {
-    logout();
-    handleNavigate("/");
+  const handleLogout = async () => {
+    try {
+      await logout();
+      handleNavigate("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+      alert("Failed to log out. Please try again.");
+    }
   };
 
   return (

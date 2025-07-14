@@ -128,16 +128,18 @@ export default function Register() {
                 autoComplete="new-password"
                 className="block w-full rounded-md px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
-              <span
+              <button
+                type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-600"
+                className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-600 bg-transparent border-none p-0"
+                aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? (
                   <EyeSlashIcon className="h-5 w-5" />
                 ) : (
                   <EyeIcon className="h-5 w-5" />
                 )}
-              </span>
+              </button>
             </div>
           </div>
 
@@ -160,16 +162,22 @@ export default function Register() {
                 autoComplete="new-password"
                 className="block w-full rounded-md px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
-              <span
+              <button
+                type="button"
                 onClick={() => setShowRepeatPassword(!showRepeatPassword)}
-                className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-600"
+                className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-600 bg-transparent border-none p-0"
+                aria-label={
+                  showRepeatPassword
+                    ? "Hide repeat password"
+                    : "Show repeat password"
+                }
               >
                 {showRepeatPassword ? (
                   <EyeSlashIcon className="h-5 w-5" />
                 ) : (
                   <EyeIcon className="h-5 w-5" />
                 )}
-              </span>
+              </button>
             </div>
           </div>
 

@@ -100,7 +100,7 @@ export default function ResetPassword() {
                 required
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
-                autoComplete="otp"
+                autoComplete="one-time-code"
                 className="block w-full rounded-md px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
             </div>
@@ -125,16 +125,20 @@ export default function ResetPassword() {
                 autoComplete="new-password"
                 className="block w-full rounded-md px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
-              <span
+              <button
+                type="button"
                 onClick={() => setShowNewPassword(!showNewPassword)}
-                className="absolute inset-y-0 right-3 flex items-center text-gray-600 cursor-pointer"
+                className="absolute inset-y-0 right-3 flex items-center text-gray-600 cursor-pointer bg-transparent border-none p-0"
+                aria-label={
+                  showNewPassword ? "Hide new password" : "Show new password"
+                }
               >
                 {showNewPassword ? (
                   <EyeSlashIcon className="h-5 w-5" />
                 ) : (
                   <EyeIcon className="h-5 w-5" />
                 )}
-              </span>
+              </button>
             </div>
           </div>
 
@@ -154,19 +158,25 @@ export default function ResetPassword() {
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                autoComplete="confirm-password"
+                autoComplete="new-password"
                 className="block w-full rounded-md px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
-              <span
+              <button
+                type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute inset-y-0 right-3 flex items-center text-gray-600 cursor-pointer"
+                className="absolute inset-y-0 right-3 flex items-center text-gray-600 cursor-pointer bg-transparent border-none p-0"
+                aria-label={
+                  showConfirmPassword
+                    ? "Hide confirm password"
+                    : "Show confirm password"
+                }
               >
                 {showConfirmPassword ? (
                   <EyeSlashIcon className="h-5 w-5" />
                 ) : (
                   <EyeIcon className="h-5 w-5" />
                 )}
-              </span>
+              </button>
             </div>
           </div>
 
