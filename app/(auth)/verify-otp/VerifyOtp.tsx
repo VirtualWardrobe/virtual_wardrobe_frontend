@@ -19,6 +19,14 @@ export default function VerifyOtp(): JSX.Element {
   const searchParams = useSearchParams();
   const router = useRouter();
   const sessionId = searchParams.get("sessionId");
+  const otpKeys = [
+    "digit-0",
+    "digit-1",
+    "digit-2",
+    "digit-3",
+    "digit-4",
+    "digit-5",
+  ];
 
   useEffect(() => {
     inputRefs.current = inputRefs.current.slice(0, 6);
@@ -168,7 +176,7 @@ export default function VerifyOtp(): JSX.Element {
           <div className="flex justify-center space-x-2">
             {otp.map((data, index) => (
               <input
-                key={index}
+                key={otpKeys[index]}
                 type="text"
                 inputMode="numeric"
                 pattern="[0-9]"

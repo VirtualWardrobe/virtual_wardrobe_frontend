@@ -29,5 +29,5 @@ export default function ProtectedRoute({
     return <Loader />;
   }
 
-  return <>{children}</>;
+  return { children };
 }

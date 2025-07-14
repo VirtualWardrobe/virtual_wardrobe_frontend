@@ -48,7 +48,7 @@ export default function WardrobeItems() {
   };
 
   useEffect(() => {
-    void fetchProducts();
+    fetchProducts();
   }, []);
 
   const handleDelete = async (id: string) => {

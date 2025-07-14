@@ -52,7 +52,7 @@ export default function VirtualTryOnHistory() {
       }
     };
 
-    void fetchData();
+    fetchData();
   }, []);
 
   if (loading) {

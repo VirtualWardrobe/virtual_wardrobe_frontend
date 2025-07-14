@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 
 interface Testimonial {
+  id: string;
   quote: string;
   author: string;
   title: string;
@@ -13,6 +14,7 @@ interface Testimonial {
 export default function Testimonials() {
   const testimonials: Testimonial[] = [
     {
+      id: "judith-black",
       quote:
         "“An absolute game-changer for organizing my closet! I love how easy it is to manage my wardrobe with this platform. The virtual closet and outfit planning features save me so much time every morning. Highly recommend!”",
       author: "Judith Black",
@@ -21,22 +23,25 @@ export default function Testimonials() {
         "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     },
     {
+      id: "john-doe",
       quote:
-        "“Perfect for fashion lovers and minimalists alike!  I've streamlined my wardrobe thanks to the analytics tool. I can see what I wear most and now focus on quality over quantity. The outfit visualization feature is also a lifesaver for planning outfits quickly.”",
+        "“Perfect for fashion lovers and minimalists alike! I've streamlined my wardrobe thanks to the analytics tool. I can see what I wear most and now focus on quality over quantity. The outfit visualization feature is also a lifesaver for planning outfits quickly.”",
       author: "John Doe",
       title: "CTO of InnovateCorp",
       image:
         "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     },
     {
+      id: "jane-smith",
       quote:
-        "“A stylish, eco-friendly fashion platform.This site has helped me make better fashion choices. I've reduced unnecessary shopping and learned how to repurpose clothes I already own. The sustainable insights are eye-opening and incredibly useful.”",
+        "“A stylish, eco-friendly fashion platform. This site has helped me make better fashion choices. I've reduced unnecessary shopping and learned how to repurpose clothes I already own. The sustainable insights are eye-opening and incredibly useful.”",
       author: "Jane Smith",
       title: "COO at GlobalReach",
       image:
         "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     },
     {
+      id: "james-carter",
       quote:
         "“A must-have for anyone who loves fashion! The virtual closet feature is fantastic. I can easily see all my clothes and plan outfits without the hassle of trying things on. The community aspect is also great for getting inspiration from others.”",
       author: "James Carter",
@@ -139,9 +144,9 @@ export default function Testimonials() {
         </figure>
 
         <div className="mt-8 flex justify-center space-x-2">
-          {testimonials.map((_, index: number) => (
+          {testimonials.map((testimonial, index: number) => (
             <button
-              key={index}
+              key={testimonial.id}
               onClick={() => handleDotClick(index)}
               className={`block h-3 w-3 rounded-full transition-colors duration-200 ${
                 currentTestimonialIndex === index
