@@ -216,7 +216,7 @@ export default function WardrobeItems() {
       <ConfirmModal
         show={!!confirmItemId}
         onClose={() => setConfirmItemId(null)}
-        onConfirm={handleDelete}
+        onConfirm={() => handleDelete()}
         message="Are you sure you want to delete this item?"
       />
     </div>
