@@ -52,7 +52,9 @@ export default function VirtualTryOnHistory() {
       }
     };
 
-    fetchData();
+    fetchData().catch((err) => {
+      console.error("Fetch error:", err);
+    });
   }, []);
 
   if (loading) {
