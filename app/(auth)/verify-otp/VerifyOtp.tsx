@@ -5,28 +5,24 @@ import React, {
   useRef,
   useState,
   useEffect,
-  ChangeEvent,
   KeyboardEvent,
   ClipboardEvent,
   JSX,
 } from "react";
+import SuccessModal from "@/app/components/SuccessModal";
+import ErrorModal from "@/app/components/ErrorModal";
 
 export default function VerifyOtp(): JSX.Element {
   const [otp, setOtp] = useState<string[]>(Array(6).fill(""));
   const [error, setError] = useState<string>("");
+  const [successMessage, setSuccessMessage] = useState<string>("");
   const [resendTimer, setResendTimer] = useState<number>(20);
+  const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false);
+  const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const searchParams = useSearchParams();
   const router = useRouter();
   const sessionId = searchParams.get("sessionId");
-  const otpKeys = [
-    "digit-0",
-    "digit-1",
-    "digit-2",
-    "digit-3",
-    "digit-4",
-    "digit-5",
-  ];
 
   useEffect(() => {
     inputRefs.current = inputRefs.current.slice(0, 6);
@@ -93,11 +89,13 @@ export default function VerifyOtp(): JSX.Element {
 
     if (fullOtp.length !== 6) {
       setError("Please enter a 6-digit OTP.");
+      setShowErrorModal(true);
       return;
     }
 
     if (!sessionId || typeof sessionId !== "string") {
       setError("Session ID not found in URL.");
+      setShowErrorModal(true);
       return;
     }
 
@@ -117,15 +115,19 @@ export default function VerifyOtp(): JSX.Element {
       );
 
       const data = await res.json();
-
-      if (!res.ok || !data.success) {
-        throw new Error(data.message || "Verification failed");
+      if (data.success) {
+        setSuccessMessage(data.message || "OTP Verified!");
+        setShowSuccessModal(true);
+        setTimeout(() => {
+          setShowSuccessModal(false);
+          router.push("/login");
+        }, 2000);
+      } else {
+        throw new Error(data.detail || "OTP verification failed");
       }
-
-      alert(data.message || "OTP Verified!");
-      router.push("/login");
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "OTP verification failed");
+      setShowErrorModal(true);
     }
   };
 
@@ -133,7 +135,6 @@ export default function VerifyOtp(): JSX.Element {
     e: React.MouseEvent<HTMLAnchorElement>
   ): Promise<void> => {
     e.preventDefault();
-
     if (resendTimer > 0 || !sessionId) return;
 
     try {
@@ -149,14 +150,13 @@ export default function VerifyOtp(): JSX.Element {
 
       const data = await res.json();
       if (data.success) {
-        setError("");
-        alert(data.message || "OTP resent successfully!");
         setResendTimer(20);
       } else {
-        throw new Error(data.message || "Failed to resend OTP");
+        throw new Error(data.detail || "Failed to resend OTP");
       }
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Failed to resend OTP.");
+      setShowErrorModal(true);
     }
   };
 
@@ -174,20 +174,15 @@ export default function VerifyOtp(): JSX.Element {
       <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-sm">
         <form className="space-y-8" onSubmit={handleVerify}>
           <div className="flex justify-center space-x-2">
-            {otp.map((data, index) => (
+            {otp.map((value, index) => (
               <input
-                key={otpKeys[index]}
+                key={index}
                 type="text"
                 inputMode="numeric"
-                pattern="[0-9]"
                 maxLength={1}
-                value={data}
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  handleChange(e.target, index)
-                }
-                onKeyDown={(e: KeyboardEvent<HTMLInputElement>) =>
-                  handleKeyDown(e.target as HTMLInputElement, e, index)
-                }
+                value={value}
+                onChange={(e) => handleChange(e.target, index)}
+                onKeyDown={(e) => handleKeyDown(e.currentTarget, e, index)}
                 onPaste={handlePaste}
                 ref={(el) => {
                   inputRefs.current[index] = el;
@@ -197,12 +192,6 @@ export default function VerifyOtp(): JSX.Element {
               />
             ))}
           </div>
-
-          {error && (
-            <p className="text-center text-sm text-red-600 font-medium">
-              {error}
-            </p>
-          )}
 
           <div>
             <button
@@ -229,6 +218,19 @@ export default function VerifyOtp(): JSX.Element {
           </p>
         </form>
       </div>
+
+      {/* Modals */}
+      <ErrorModal
+        show={showErrorModal}
+        onClose={() => setShowErrorModal(false)}
+        message={error}
+      />
+
+      <SuccessModal
+        show={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+        message={successMessage}
+      />
     </>
   );
 }

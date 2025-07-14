@@ -1,7 +1,12 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Loader from "../components/Loader";
+import SuccessModal from "../components/SuccessModal";
+import ConfirmModal from "../components/ConfirmModal";
+import ErrorModal from "../components/ErrorModal";
 
 interface WardrobeItem {
   id: string;
@@ -20,49 +25,60 @@ export default function WardrobeItems() {
   const [products, setProducts] = useState<WardrobeItem[]>([]);
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [confirmItemId, setConfirmItemId] = useState<string | null>(null);
 
-  const fetchProducts = async () => {
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/wardrobe-items`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      const data = await response.json();
-      if (data.success) {
-        setProducts(data.data.items);
-      } else {
-        alert(`Failed to fetch items: ${data.message}`);
-      }
-    } catch (error) {
-      console.error("Error fetching items:", error);
-      alert("An error occurred while fetching items. Please try again later.");
-    } finally {
-      setLoading(false);
-    }
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const showError = (message: string) => {
+    setErrorMessage(message);
+    setShowErrorModal(true);
   };
 
   useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/wardrobe-items`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        const data = await response.json();
+        if (data.success) {
+          setProducts(data.data.items);
+        } else {
+          showError(`Failed to fetch items: ${data.detail}`);
+        }
+      } catch (error) {
+        console.error("Error fetching items:", error);
+        showError(
+          "An error occurred while fetching items. Please try again later."
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchProducts().catch((err) => {
       console.error("Fetch error:", err);
+      showError("Something went wrong while loading your wardrobe.");
     });
   }, []);
 
-  const handleDelete = async (id: string) => {
-    const confirm = window.confirm(
-      "Are you sure you want to delete this item?"
-    );
-    if (!confirm) return;
+  const handleDelete = async () => {
+    if (!confirmItemId) return;
 
     try {
-      setLoadingId(id);
+      setLoadingId(confirmItemId);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/wardrobe-items/${id}`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/wardrobe-items/${confirmItemId}`,
         {
           method: "DELETE",
           headers: {
@@ -70,19 +86,22 @@ export default function WardrobeItems() {
           },
         }
       );
+
       const data = await response.json();
 
-      if (!response.ok || !data.success) {
-        throw new Error(data.message || "Failed to delete item");
+      if (data.success) {
+        setProducts((prev) => prev.filter((item) => item.id !== confirmItemId));
+        setSuccessMessage(data.message || "Item deleted successfully!");
+        setShowSuccessModal(true);
+      } else {
+        throw new Error(data.detail || "Failed to delete item");
       }
-
-      // Remove item from UI
-      setProducts((prev) => prev.filter((item) => item.id !== id));
     } catch (error) {
       console.error("Delete error:", error);
-      alert(error instanceof Error ? error.message : "Delete failed");
+      showError(error instanceof Error ? error.message : "Delete failed");
     } finally {
       setLoadingId(null);
+      setConfirmItemId(null);
     }
   };
 
@@ -164,7 +183,7 @@ export default function WardrobeItems() {
               </p>
 
               <button
-                onClick={() => handleDelete(product.id)}
+                onClick={() => setConfirmItemId(product.id)}
                 disabled={loadingId === product.id}
                 className={`mt-3 text-sm px-3 py-1.5 rounded-md font-semibold shadow-sm ${
                   loadingId === product.id
@@ -178,6 +197,28 @@ export default function WardrobeItems() {
           ))}
         </div>
       )}
+
+      {/* Success Modal */}
+      <SuccessModal
+        show={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+        message={successMessage}
+      />
+
+      {/* Error Modal */}
+      <ErrorModal
+        show={showErrorModal}
+        onClose={() => setShowErrorModal(false)}
+        message={errorMessage}
+      />
+
+      {/* Confirm Delete Modal */}
+      <ConfirmModal
+        show={!!confirmItemId}
+        onClose={() => setConfirmItemId(null)}
+        onConfirm={handleDelete}
+        message="Are you sure you want to delete this item?"
+      />
     </div>
   );
 }

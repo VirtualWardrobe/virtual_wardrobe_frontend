@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import Loader from "../components/Loader";
+import ErrorModal from "../components/ErrorModal";
 
 interface TryOnResult {
   id: string | number;
@@ -12,9 +13,11 @@ interface TryOnResult {
   created_at: string;
 }
 
-export default function VirtualTryOnHistory() {
+export default function VirtualTryOn() {
   const [results, setResults] = useState<TryOnResult[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -40,13 +43,15 @@ export default function VirtualTryOnHistory() {
         if (data.success) {
           setResults(data.data.items);
         } else {
-          alert(data.detail);
+          setErrorMessage(data.detail || "Something went wrong.");
+          setIsErrorModalOpen(true);
         }
       } catch (error) {
         console.error("Error fetching virtual try-on history:", error);
-        alert(
+        setErrorMessage(
           "An error occurred while fetching your virtual try-on history. Please try again later."
         );
+        setIsErrorModalOpen(true);
       } finally {
         setLoading(false);
       }
@@ -70,6 +75,11 @@ export default function VirtualTryOnHistory() {
         <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">
           No virtual try-on history available.
         </dd>
+        <ErrorModal
+          show={isErrorModalOpen}
+          onClose={() => setIsErrorModalOpen(false)}
+          message={errorMessage}
+        />
       </div>
     );
   }
@@ -155,6 +165,13 @@ export default function VirtualTryOnHistory() {
           </div>
         ))}
       </div>
+
+      {/* Error Modal */}
+      <ErrorModal
+        show={isErrorModalOpen}
+        onClose={() => setIsErrorModalOpen(false)}
+        message={errorMessage}
+      />
     </div>
   );
 }

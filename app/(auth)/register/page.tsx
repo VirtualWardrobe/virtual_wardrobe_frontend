@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import ErrorModal from "@/app/components/ErrorModal";
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -13,6 +14,7 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const [error, setError] = useState("");
+  const [showErrorModal, setShowErrorModal] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -20,7 +22,8 @@ export default function Register() {
     setError("");
 
     if (password !== repeatPassword) {
-      alert("Passwords do not match.");
+      setError("Passwords do not match.");
+      setShowErrorModal(true);
       return;
     }
 
@@ -48,10 +51,10 @@ export default function Register() {
         throw new Error("No session ID received");
       }
 
-      // Redirect to verify-otp page with sessionId
       router.push(`/verify-otp?sessionId=${sessionId}`);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Registration failed");
+      setShowErrorModal(true);
     }
   };
 
@@ -181,11 +184,6 @@ export default function Register() {
             </div>
           </div>
 
-          {/* Error message */}
-          {error && (
-            <div className="text-sm text-red-600 text-center">{error}</div>
-          )}
-
           {/* Submit Button */}
           <div>
             <button
@@ -208,6 +206,13 @@ export default function Register() {
           </Link>
         </p>
       </div>
+
+      {/* Error Modal */}
+      <ErrorModal
+        show={showErrorModal}
+        onClose={() => setShowErrorModal(false)}
+        message={error}
+      />
     </>
   );
 }

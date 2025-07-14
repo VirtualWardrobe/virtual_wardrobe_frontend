@@ -19,6 +19,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
 import Loader from "./Loader";
+import SuccessModal from "./SuccessModal";
+import ErrorModal from "./ErrorModal";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -30,6 +32,11 @@ const navigation = [
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+
   const router = useRouter();
   const { isLoggedIn, logout } = useAuth();
 
@@ -46,10 +53,13 @@ export default function Header() {
   const handleLogout = async () => {
     try {
       await logout();
+      setSuccessMessage("Logged out successfully.");
+      setShowSuccessModal(true);
       await handleNavigate("/");
     } catch (error) {
       console.error("Logout failed:", error);
-      alert("Failed to log out. Please try again.");
+      setErrorMessage("Failed to log out. Please try again.");
+      setShowErrorModal(true);
     }
   };
 
@@ -191,7 +201,7 @@ export default function Header() {
                       Profile
                     </button>
                     <button
-                      onClick={() => handleLogout()}
+                      onClick={handleLogout}
                       className="-mx-3 block w-full text-left px-3 py-2 text-base font-semibold text-red-600 hover:bg-gray-50"
                     >
                       Logout
@@ -212,6 +222,18 @@ export default function Header() {
       </Dialog>
 
       {loading && <Loader />}
+
+      {/* Modals */}
+      <SuccessModal
+        show={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+        message={successMessage}
+      />
+      <ErrorModal
+        show={showErrorModal}
+        onClose={() => setShowErrorModal(false)}
+        message={errorMessage}
+      />
     </header>
   );
 }

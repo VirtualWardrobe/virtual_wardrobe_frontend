@@ -9,17 +9,17 @@ import Image from "next/image";
 import Link from "next/link";
 import VirtualTryOnHistory from "../components/VirtualTryOnHistory";
 import { useUser } from "../context/UserContext";
-import {
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-  Description,
-} from "@headlessui/react";
+
+import ErrorModal from "../components/ErrorModal";
+import ConfirmModal from "../components/ConfirmModal";
+import SuccessModal from "../components/SuccessModal";
 
 export default function Profile() {
   const { user, fetchUserData } = useUser();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDeletedModalOpen, setIsDeletedModalOpen] = useState(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     fetchUserData();
@@ -38,18 +38,21 @@ export default function Profile() {
           },
         }
       );
+
       const data = await response.json();
+
       if (data.success) {
         localStorage.removeItem("token");
-        setIsDeletedModalOpen(true);
+        setIsSuccessModalOpen(true);
       } else {
-        console.error(
-          "Failed to delete account:",
-          JSON.stringify(data.detail || "No details provided")
-        );
+        console.error("Account deletion failed:", data);
+        setErrorMessage("Failed to delete account. Please try again.");
+        setIsErrorModalOpen(true);
       }
     } catch (error) {
       console.error("Error deleting account:", error);
+      setErrorMessage("Something went wrong. Please try again later.");
+      setIsErrorModalOpen(true);
     }
   };
 
@@ -69,6 +72,7 @@ export default function Profile() {
           View your profile information here.
         </p>
       </div>
+
       <div className="mt-6 border-t border-gray-300">
         <dl className="divide-y divide-gray-300">
           {/* Profile Picture */}
@@ -167,7 +171,7 @@ export default function Profile() {
 
           {/* Phone Verified */}
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt className="flex items-center text-sm/6 font-medium text-gray-900">
+            <dt className="text-sm/6 font-medium text-gray-900">
               Phone Verified
             </dt>
             <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">
@@ -226,8 +230,8 @@ export default function Profile() {
                 This action is irreversible. Please proceed with caution.
               </p>
               <button
-                onClick={() => setIsModalOpen(true)}
-                className="mt-2 rounded-md bg-red-600 px-3 py-2 text-xs font-semibold text-white hover:bg-red-500"
+                onClick={() => setIsConfirmModalOpen(true)}
+                className="mt-2 rounded-md bg-red-600 px-3 py-2 text-xs font-semibold text-white hover:bg-red-500 cursor-pointer"
               >
                 Delete Account
               </button>
@@ -238,83 +242,31 @@ export default function Profile() {
         </dl>
       </div>
 
-      {/* Confirm Delete Modal */}
-      <Dialog
-        open={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        className="relative z-50"
-      >
-        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-        <div className="fixed inset-0 flex items-center justify-center p-4">
-          <DialogPanel className="w-full max-w-md rounded bg-white p-6 shadow-lg">
-            <DialogTitle className="text-lg font-semibold text-gray-900">
-              Confirm Deletion
-            </DialogTitle>
-            <Description className="mt-2 text-sm text-gray-600">
-              Are you sure you want to delete your account? This action cannot
-              be undone.
-            </Description>
+      {/* Modals */}
+      <ConfirmModal
+        show={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)}
+        onConfirm={async () => {
+          await deleteAccount();
+          setIsConfirmModalOpen(false);
+        }}
+        message="Are you sure you want to delete your account? This action cannot be undone."
+      />
 
-            <div className="mt-4 flex justify-end space-x-2">
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="rounded-md bg-gray-100 px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={async () => {
-                  try {
-                    await deleteAccount(); // Ensure delete finishes before closing modal
-                    setIsModalOpen(false);
-                  } catch (err) {
-                    console.error("Account deletion failed:", err);
-                    alert("Failed to delete account. Please try again.");
-                  }
-                }}
-                className="rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-500"
-              >
-                Confirm Delete
-              </button>
-            </div>
-          </DialogPanel>
-        </div>
-      </Dialog>
-
-      {/* Success Modal */}
-      <Dialog
-        open={isDeletedModalOpen}
+      <SuccessModal
+        show={isSuccessModalOpen}
         onClose={() => {
-          setIsDeletedModalOpen(false);
+          setIsSuccessModalOpen(false);
           window.location.href = "/";
         }}
-        className="relative z-50"
-      >
-        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-        <div className="fixed inset-0 flex items-center justify-center p-4">
-          <DialogPanel className="w-full max-w-md rounded bg-white p-6 shadow-lg">
-            <DialogTitle className="text-lg font-semibold text-gray-900">
-              Account Deletion Scheduled
-            </DialogTitle>
-            <Description className="mt-2 text-sm text-gray-600">
-              Your account is scheduled for deletion and will be permanently
-              deleted within 30 days.
-            </Description>
+        message="Your account has been scheduled for deletion and will be permanently deleted within 30 days."
+      />
 
-            <div className="mt-4 flex justify-end">
-              <button
-                onClick={() => {
-                  setIsDeletedModalOpen(false);
-                  window.location.href = "/";
-                }}
-                className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
-              >
-                Close
-              </button>
-            </div>
-          </DialogPanel>
-        </div>
-      </Dialog>
+      <ErrorModal
+        show={isErrorModalOpen}
+        onClose={() => setIsErrorModalOpen(false)}
+        message={errorMessage}
+      />
     </div>
   );
 }
