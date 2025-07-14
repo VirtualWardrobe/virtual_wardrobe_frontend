@@ -3,7 +3,7 @@ import React from "react";
 type ConfirmModalProps = {
   show: boolean;
   onClose: () => void;
-  onConfirm: () => void;
+  onConfirm: () => void | Promise<void>;
   message: string;
 };
 

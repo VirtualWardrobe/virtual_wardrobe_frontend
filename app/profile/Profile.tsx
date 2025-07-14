@@ -45,7 +45,7 @@ export default function Profile() {
         localStorage.removeItem("token");
         setIsSuccessModalOpen(true);
       } else {
-        console.error("Account deletion failed:", data);
+        console.error("Account deletion failed:", JSON.stringify(data));
         setErrorMessage("Failed to delete account. Please try again.");
         setIsErrorModalOpen(true);
       }
