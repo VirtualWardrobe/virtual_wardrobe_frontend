@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Loader from "../components/Loader";
+import Loader from "./Loader";
 
 export default function ProtectedRoute({
   children,

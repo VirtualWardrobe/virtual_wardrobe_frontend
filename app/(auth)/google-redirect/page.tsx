@@ -172,7 +172,7 @@ export default function GoogleRedirectPage() {
 
       {/* Optional Error Modal */}
       {errorMessage && (
-        <Transition appear show={!!errorMessage} as={Fragment}>
+        <Transition appear show={Boolean(errorMessage)} as={Fragment}>
           <Dialog as="div" className="relative z-10" onClose={handleCloseError}>
             <TransitionChild
               as={Fragment}
