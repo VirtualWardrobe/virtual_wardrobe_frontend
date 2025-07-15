@@ -8,7 +8,8 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
-import ErrorModal from "../components/ErrorModal";
+import ErrorModal from "./ErrorModal";
+import SuccessModal from "./SuccessModal";
 
 interface ForgotPasswordProps {
   isOpen: boolean;
@@ -23,6 +24,10 @@ export default function ForgotPassword({
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [sessionId, setSessionId] = useState("");
+
   const handleSubmit = async () => {
     try {
       const response = await fetch(
@@ -35,9 +40,13 @@ export default function ForgotPassword({
         }
       );
       const data = await response.json();
+
       if (data.success) {
-        const sessionId = data.data.session_id;
-        window.location.href = `/reset-password?sessionId=${sessionId}`;
+        localStorage.setItem("reset_email", email);
+        setSessionId(data.data.session_id);
+        setSuccessMessage("OTP sent successfully! Please check your email.");
+        setIsSuccessModalOpen(true);
+        onClose();
       } else {
         onClose();
         setErrorMessage(data.detail || "Failed to send OTP.");
@@ -49,6 +58,11 @@ export default function ForgotPassword({
       setErrorMessage("Failed to send OTP. Please try again later.");
       setIsErrorModalOpen(true);
     }
+  };
+
+  const handleSuccessClose = () => {
+    setIsSuccessModalOpen(false);
+    window.location.href = `/reset-password?sessionId=${sessionId}`;
   };
 
   return (
@@ -113,7 +127,6 @@ export default function ForgotPassword({
                 >
                   Send OTP
                 </button>
-
                 <button
                   type="button"
                   data-autofocus
@@ -133,6 +146,13 @@ export default function ForgotPassword({
         show={isErrorModalOpen}
         onClose={() => setIsErrorModalOpen(false)}
         message={errorMessage}
+      />
+
+      {/* Success Modal */}
+      <SuccessModal
+        show={isSuccessModalOpen}
+        onClose={handleSuccessClose}
+        message={successMessage}
       />
     </>
   );

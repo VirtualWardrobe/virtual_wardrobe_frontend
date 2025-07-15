@@ -176,7 +176,7 @@ export default function VerifyOtp(): JSX.Element {
           <div className="flex justify-center space-x-2">
             {otp.map((value, index) => (
               <input
-                key={index}
+                key={`otp-input-${index}`}
                 type="text"
                 inputMode="numeric"
                 maxLength={1}

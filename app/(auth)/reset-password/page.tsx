@@ -1,9 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
+import ErrorModal from "@/app/components/ErrorModal";
+import SuccessModal from "@/app/components/SuccessModal";
 
 export default function ResetPassword() {
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -14,15 +15,31 @@ export default function ResetPassword() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
   const router = useRouter();
+
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("reset_email");
+    if (storedEmail) {
+      setEmail(storedEmail);
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (newPassword !== confirmPassword) {
+      setErrorMessage("Passwords do not match.");
+      setShowErrorModal(true);
+      return;
+    }
+
     try {
-      if (newPassword !== confirmPassword) {
-        alert("Passwords do not match.");
-        return;
-      }
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/reset-password`,
         {
@@ -38,16 +55,25 @@ export default function ResetPassword() {
         }
       );
       const data = await response.json();
+
       if (data.success) {
-        alert("Password reset successfully. You can now log in.");
-        router.push("/login");
+        setSuccessMessage("Password reset successfully. You can now log in.");
+        setShowSuccessModal(true);
+        localStorage.removeItem("reset_email");
       } else {
-        alert(data.detail || "Failed to reset password.");
+        setErrorMessage(data.detail || "Failed to reset password.");
+        setShowErrorModal(true);
       }
     } catch (error) {
       console.error("Error resetting password:", error);
-      alert("Failed to reset password. Please try again later.");
+      setErrorMessage("Failed to reset password. Please try again later.");
+      setShowErrorModal(true);
     }
+  };
+
+  const handleSuccessClose = () => {
+    setShowSuccessModal(false);
+    router.push("/login");
   };
 
   return (
@@ -59,8 +85,8 @@ export default function ResetPassword() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form action="#" method="POST" className="space-y-6">
-          {/* Email */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Email (disabled) */}
           <div>
             <label
               htmlFor="email"
@@ -73,12 +99,9 @@ export default function ResetPassword() {
                 id="email"
                 name="email"
                 type="email"
-                placeholder="johndoe@gmail.com"
-                required
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="email"
-                className="block w-full rounded-md px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                disabled
+                className="block w-full rounded-md bg-gray-100 px-3 py-1.5 text-base text-gray-500 outline-none cursor-not-allowed sm:text-sm/6"
               />
             </div>
           </div>
@@ -182,18 +205,27 @@ export default function ResetPassword() {
 
           {/* Submit Button */}
           <div>
-            <Link href="/login">
-              <button
-                type="submit"
-                onClick={handleSubmit}
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer"
-              >
-                Reset
-              </button>
-            </Link>
+            <button
+              type="submit"
+              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer"
+            >
+              Reset
+            </button>
           </div>
         </form>
       </div>
+
+      {/* Modals */}
+      <ErrorModal
+        show={showErrorModal}
+        onClose={() => setShowErrorModal(false)}
+        message={errorMessage}
+      />
+      <SuccessModal
+        show={showSuccessModal}
+        onClose={handleSuccessClose}
+        message={successMessage}
+      />
     </>
   );
 }

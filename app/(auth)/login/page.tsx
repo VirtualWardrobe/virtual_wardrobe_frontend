@@ -15,6 +15,8 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
+import ErrorModal from "@/app/components/ErrorModal";
+import SuccessModal from "@/app/components/SuccessModal";
 
 export default function Login() {
   const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
@@ -23,6 +25,13 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
   const router = useRouter();
   const { login } = useAuth();
   const { fetchUserData } = useUser();
@@ -59,13 +68,16 @@ export default function Login() {
       if (data.success) {
         login(data.data.access_token);
         await fetchUserData();
-        router.push("/");
+        setSuccessMessage("Logged in successfully!");
+        setShowSuccessModal(true);
       } else {
-        alert(data.detail);
+        setErrorMessage(data.detail || "Login failed.");
+        setShowErrorModal(true);
       }
     } catch (error) {
       console.error("Login error:", error);
-      alert("An error occurred while logging in. Please try again.");
+      setErrorMessage("An error occurred while logging in. Please try again.");
+      setShowErrorModal(true);
     }
   };
 
@@ -87,13 +99,16 @@ export default function Login() {
       if (data.success) {
         login(data.data.access_token);
         await fetchUserData();
-        router.push("/");
+        setSuccessMessage("Account restored successfully!");
+        setShowSuccessModal(true);
       } else {
-        alert(data.detail || "Failed to restore account.");
+        setErrorMessage(data.detail || "Failed to restore account.");
+        setShowErrorModal(true);
       }
     } catch (error) {
       console.error("Restore error:", error);
-      alert("An error occurred while restoring account.");
+      setErrorMessage("An error occurred while restoring the account.");
+      setShowErrorModal(true);
     } finally {
       setRestorePending(false);
       setIsRestoreModalOpen(false);
@@ -114,10 +129,14 @@ export default function Login() {
       }
     } catch (error) {
       console.error("Google login error:", error);
-      alert(
-        "An error occurred while logging in with Google. Please try again."
-      );
+      setErrorMessage("Google login failed. Please try again.");
+      setShowErrorModal(true);
     }
+  };
+
+  const handleSuccessClose = () => {
+    setShowSuccessModal(false);
+    router.push("/");
   };
 
   return (
@@ -315,6 +334,18 @@ export default function Login() {
           </div>
         </Dialog>
       </Transition>
+
+      {/* Modals */}
+      <ErrorModal
+        show={showErrorModal}
+        onClose={() => setShowErrorModal(false)}
+        message={errorMessage}
+      />
+      <SuccessModal
+        show={showSuccessModal}
+        onClose={handleSuccessClose}
+        message={successMessage}
+      />
     </>
   );
 }

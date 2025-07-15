@@ -11,6 +11,8 @@ import {
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext";
 import { useUser } from "@/app/context/UserContext";
+import ErrorModal from "@/app/components/ErrorModal";
+import SuccessModal from "@/app/components/SuccessModal";
 
 export default function GoogleRedirectPage() {
   const router = useRouter();
@@ -20,7 +22,12 @@ export default function GoogleRedirectPage() {
   const [isRestoreModalOpen, setIsRestoreModalOpen] = useState(false);
   const [restorePending, setRestorePending] = useState(false);
   const [restoreEmail, setRestoreEmail] = useState("");
+
   const [errorMessage, setErrorMessage] = useState("");
+  const [showErrorModal, setShowErrorModal] = useState(false);
+
+  const [successMessage, setSuccessMessage] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const hasHandled = useRef(false);
 
@@ -36,7 +43,11 @@ export default function GoogleRedirectPage() {
       hasHandled.current = true;
       login(token);
       fetchUserData();
-      router.push("/");
+      setSuccessMessage("Login successful! Redirecting...");
+      setShowSuccessModal(true);
+      setTimeout(() => {
+        router.push("/");
+      }, 2000);
     } else if (success === "false" && email) {
       hasHandled.current = true;
       setRestoreEmail(email);
@@ -44,6 +55,7 @@ export default function GoogleRedirectPage() {
     } else {
       hasHandled.current = true;
       setErrorMessage("Google login failed.");
+      setShowErrorModal(true);
     }
   }, [login, fetchUserData, router]);
 
@@ -63,28 +75,25 @@ export default function GoogleRedirectPage() {
       if (data.success) {
         login(data.data.access_token);
         await fetchUserData();
-        router.push("/");
+        setSuccessMessage("Account restored successfully! Redirecting...");
+        setShowSuccessModal(true);
+        setIsRestoreModalOpen(false);
+        setTimeout(() => {
+          router.push("/");
+        }, 2000);
       } else {
         setIsRestoreModalOpen(false);
         setErrorMessage(data.detail || "Failed to restore account.");
+        setShowErrorModal(true);
       }
     } catch (error) {
       console.error("Error restoring account:", error);
       setIsRestoreModalOpen(false);
       setErrorMessage("An error occurred while restoring your account.");
+      setShowErrorModal(true);
     } finally {
       setRestorePending(false);
     }
-  };
-
-  const handleCloseModal = () => {
-    setIsRestoreModalOpen(false);
-    router.push("/login");
-  };
-
-  const handleCloseError = () => {
-    setErrorMessage("");
-    router.push("/login");
   };
 
   return (
@@ -150,7 +159,7 @@ export default function GoogleRedirectPage() {
                     <button
                       type="button"
                       className="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 cursor-pointer"
-                      onClick={handleCloseModal}
+                      onClick={() => setIsRestoreModalOpen(false)}
                     >
                       Cancel
                     </button>
@@ -170,59 +179,22 @@ export default function GoogleRedirectPage() {
         </Dialog>
       </Transition>
 
-      {/* Optional Error Modal */}
-      {errorMessage && (
-        <Transition appear show={Boolean(errorMessage)} as={Fragment}>
-          <Dialog as="div" className="relative z-10" onClose={handleCloseError}>
-            <TransitionChild
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <div className="fixed inset-0 bg-black/30 backdrop-blur-sm" />
-            </TransitionChild>
+      {/* Error Modal */}
+      <ErrorModal
+        show={showErrorModal}
+        onClose={() => setShowErrorModal(false)}
+        message={errorMessage}
+      />
 
-            <div className="fixed inset-0 overflow-y-auto">
-              <div className="flex min-h-full items-center justify-center p-4 text-center">
-                <TransitionChild
-                  as={Fragment}
-                  enter="ease-out duration-300"
-                  enterFrom="opacity-0 scale-95"
-                  enterTo="opacity-100 scale-100"
-                  leave="ease-in duration-200"
-                  leaveFrom="opacity-100 scale-100"
-                  leaveTo="opacity-0 scale-95"
-                >
-                  <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                    <DialogTitle
-                      as="h3"
-                      className="text-lg font-medium leading-6 text-red-600"
-                    >
-                      Login Error
-                    </DialogTitle>
-                    <div className="mt-2">
-                      <p className="text-sm text-gray-700">{errorMessage}</p>
-                    </div>
-                    <div className="mt-4 flex justify-end">
-                      <button
-                        type="button"
-                        className="inline-flex justify-center rounded-md bg-red-500 px-4 py-2 text-sm font-medium text-white hover:bg-red-400 cursor-pointer"
-                        onClick={handleCloseError}
-                      >
-                        Close
-                      </button>
-                    </div>
-                  </DialogPanel>
-                </TransitionChild>
-              </div>
-            </div>
-          </Dialog>
-        </Transition>
-      )}
+      {/* Success Modal */}
+      <SuccessModal
+        show={showSuccessModal}
+        onClose={() => {
+          setShowSuccessModal(false);
+          router.push("/");
+        }}
+        message={successMessage}
+      />
     </>
   );
 }
