@@ -104,10 +104,14 @@ export default function VirtualTryOnForm() {
         </p>
 
         <div>
-          <label className="block text-base font-medium text-gray-800 mb-2">
+          <label
+            htmlFor="humanImage"
+            className="block text-base font-medium text-gray-800 mb-2"
+          >
             Human Image
           </label>
           <input
+            id="humanImage"
             type="file"
             accept="image/*"
             onChange={(e) => setHumanImage(e.target.files?.[0] || null)}
@@ -116,10 +120,14 @@ export default function VirtualTryOnForm() {
         </div>
 
         <div>
-          <label className="block text-base font-medium text-gray-800 mb-2">
+          <label
+            htmlFor="garmentImage"
+            className="block text-base font-medium text-gray-800 mb-2"
+          >
             Garment Image
           </label>
           <input
+            id="garmentImage"
             type="file"
             accept="image/*"
             onChange={(e) => setGarmentImage(e.target.files?.[0] || null)}
@@ -128,10 +136,14 @@ export default function VirtualTryOnForm() {
         </div>
 
         <div>
-          <label className="block text-base font-medium text-gray-800 mb-2">
+          <label
+            htmlFor="tryonType"
+            className="block text-base font-medium text-gray-800 mb-2"
+          >
             Try-on Type
           </label>
           <select
+            id="tryonType"
             value={tryonType}
             onChange={(e) => setTryonType(e.target.value)}
             className="block w-full appearance-none px-4 py-3 pr-12 bg-white border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none cursor-pointer bg-no-repeat bg-[right_1rem_center] bg-[length:1rem_1rem]"
