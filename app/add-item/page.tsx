@@ -24,6 +24,13 @@ export default function AddItem() {
     e.preventDefault();
     setError("");
     setShowErrorModal(false);
+
+    if (!category) {
+      setError("Please select a category before submitting.");
+      setShowErrorModal(true);
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -35,11 +42,13 @@ export default function AddItem() {
       const url = new URL(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/wardrobe-items`
       );
-      url.searchParams.append("item_category", category.toUpperCase());
-      url.searchParams.append("item_type", type.toUpperCase());
-      url.searchParams.append("item_brand", brand);
-      url.searchParams.append("item_size", size.toUpperCase());
-      url.searchParams.append("item_color", color.toUpperCase());
+
+      if (category)
+        url.searchParams.append("item_category", category.toUpperCase());
+      if (type) url.searchParams.append("item_type", type.toUpperCase());
+      if (brand) url.searchParams.append("item_brand", brand);
+      if (size) url.searchParams.append("item_size", size.toUpperCase());
+      if (color) url.searchParams.append("item_color", color.toUpperCase());
 
       const body = new FormData();
       if (image) {
@@ -97,14 +106,60 @@ export default function AddItem() {
                 >
                   Category
                 </label>
-                <input
+                <select
                   id="category"
                   name="category"
-                  type="text"
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="block w-full px-4 py-4 border border-gray-300 rounded-lg text-gray-700 bg-white placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition"
-                />
+                  className="block w-full appearance-none px-4 py-3 pr-12 bg-white border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none cursor-pointer bg-no-repeat bg-[right_1rem_center] bg-[length:1rem_1rem]"
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg fill='gray' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' d='M5.23 7.21a.75.75 0 011.06.02L10 11.043l3.71-3.812a.75.75 0 111.08 1.04l-4.24 4.365a.75.75 0 01-1.08 0L5.25 8.27a.75.75 0 01-.02-1.06z' clip-rule='evenodd' /%3E%3C/svg%3E")`,
+                  }}
+                >
+                  <option value="" hidden>
+                    Select Category
+                  </option>
+                  {[
+                    "SHIRT",
+                    "T_SHIRT",
+                    "BLOUSE",
+                    "SWEATER",
+                    "HOODIE",
+                    "POLO",
+                    "TANK_TOP",
+                    "PANT",
+                    "JEAN",
+                    "SHORT",
+                    "SKIRT",
+                    "LEGGING",
+                    "SWEATPANT",
+                    "TROUSER",
+                    "JACKET",
+                    "COAT",
+                    "BLAZER",
+                    "CARDIGAN",
+                    "VEST",
+                    "SUIT",
+                    "DRESS",
+                    "FORMAL_SHIRT",
+                    "INNERWEAR",
+                    "PAJAMA",
+                    "ROBE",
+                    "SOCK",
+                    "UNDERWEAR",
+                    "SPORTSWEAR",
+                    "SWIMWEAR",
+                    "ATHLETIC_TOP",
+                    "ATHLETIC_BOTTOM",
+                  ].map((item) => (
+                    <option key={item} value={item}>
+                      {item
+                        .replace(/_/g, " ")
+                        .toLowerCase()
+                        .replace(/\b\w/g, (l) => l.toUpperCase())}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="sm:col-span-3">
