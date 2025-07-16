@@ -174,8 +174,8 @@ export default function VirtualTryOn() {
                 {[
                   { src: result.human_image_url, label: "Original" },
                   { src: result.garment_image_url, label: "Garment" },
-                ].map(({ src, label }, idx) => (
-                  <div key={idx} className="flex flex-col items-center">
+                ].map(({ src, label }) => (
+                  <div key={label} className="flex flex-col items-center">
                     <div className="w-full overflow-hidden rounded bg-gray-100">
                       <Image
                         src={src}
