@@ -165,18 +165,28 @@ export default function WardrobeItems() {
               <h3 className="text-lg font-semibold text-gray-800 mt-2">
                 {product.brand} {capitalize(product.category)}
               </h3>
-              <p className="text-sm text-gray-600">
-                <span className="font-medium">Type:</span>{" "}
-                {capitalize(product.type)}
-              </p>
-              <p className="text-sm text-gray-600">
-                <span className="font-medium">Color:</span>{" "}
-                {capitalize(product.color)}
-              </p>
-              <p className="text-sm text-gray-600">
-                <span className="font-medium">Size:</span>{" "}
-                {product.size.toUpperCase()}
-              </p>
+
+              {product.type && (
+                <p className="text-sm text-gray-600">
+                  <span className="font-medium">Type:</span>{" "}
+                  {capitalize(product.type)}
+                </p>
+              )}
+
+              {product.color && (
+                <p className="text-sm text-gray-600">
+                  <span className="font-medium">Color:</span>{" "}
+                  {capitalize(product.color)}
+                </p>
+              )}
+
+              {product.size && (
+                <p className="text-sm text-gray-600">
+                  <span className="font-medium">Size:</span>{" "}
+                  {product.size.toUpperCase()}
+                </p>
+              )}
+
               <p className="text-sm text-gray-600">
                 <span className="font-medium">Added:</span>{" "}
                 {formatDate(product.created_at)}
@@ -185,7 +195,7 @@ export default function WardrobeItems() {
               <button
                 onClick={() => setConfirmItemId(product.id)}
                 disabled={loadingId === product.id}
-                className={`mt-3 text-sm px-3 py-1.5 rounded-md font-semibold shadow-sm ${
+                className={`mt-3 text-sm px-3 py-1.5 rounded-md font-semibold shadow-sm cursor-pointer ${
                   loadingId === product.id
                     ? "bg-gray-400 text-white cursor-not-allowed"
                     : "bg-red-600 text-white hover:bg-red-500"

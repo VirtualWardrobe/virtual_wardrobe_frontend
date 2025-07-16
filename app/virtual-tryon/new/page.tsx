@@ -4,6 +4,7 @@ import { useState, FormEvent } from "react";
 import Loader from "./Loader";
 import ErrorModal from "@/app/components/ErrorModal";
 import ResultModal from "./ResultModal";
+import { useRouter } from "next/navigation";
 
 type ResultData = {
   human_image_url: string;
@@ -21,6 +22,8 @@ export default function VirtualTryOnForm() {
   const [showError, setShowError] = useState(false);
   const [showResultModal, setShowResultModal] = useState(false);
   const [resultData, setResultData] = useState<ResultData | null>(null);
+
+  const router = useRouter();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -91,10 +94,7 @@ export default function VirtualTryOnForm() {
         onClose={() => setShowError(false)}
       />
 
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-8 mt-12 max-w-2xl mx-auto"
-      >
+      <form onSubmit={handleSubmit} className="space-y-8 m-auto max-w-2xl">
         <h2 className="text-3xl font-semibold text-gray-900 mb-2">
           New Virtual Try-on
         </h2>
@@ -160,13 +160,22 @@ export default function VirtualTryOnForm() {
           </select>
         </div>
 
-        <button
-          type="submit"
-          className="w-full bg-indigo-600 text-white text-lg font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-400 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-          disabled={loading}
-        >
-          {loading ? "Processing..." : "Start Try-on"}
-        </button>
+        <div className="mt-8 flex flex-col sm:flex-row justify-end gap-3">
+          <button
+            type="button"
+            onClick={() => router.push("/virtual-tryon")}
+            className="w-full sm:w-auto flex-1 bg-gray-300 text-gray-800 text-base font-medium py-2 px-5 rounded-md shadow hover:bg-gray-400 focus:ring-2 focus:ring-gray-300 transition cursor-pointer"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="w-full sm:w-auto flex-1 bg-indigo-600 text-white text-base font-medium py-2 px-5 rounded-md shadow hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-400 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            disabled={loading}
+          >
+            {loading ? "Processing..." : "Start Try-on"}
+          </button>
+        </div>
       </form>
     </>
   );

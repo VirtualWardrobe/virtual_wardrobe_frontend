@@ -145,18 +145,18 @@ export default function VirtualTryOn() {
   }
 
   return (
-    <div className="mt-8 px-4 sm:px-0">
-      <div className="flex items-start justify-between">
-        <div>
+    <div className="mt-16 px-4 sm:px-0">
+      <div className="flex flex-col gap-y-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="w-full">
           <h3 className="text-3xl font-semibold text-gray-900">
             Virtual Try-on
           </h3>
-          <p className="mt-1 max-w-2xl text-base text-gray-500 mb-6">
-            Here are the clothes you have tried on virtually.
+          <p className="mt-1 max-w-2xl text-base text-gray-500 mb-2">
+            Here are the clothes you have tried virtually.
           </p>
         </div>
-        <Link href={"/virtual-tryon/new"}>
-          <button className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 cursor-pointer">
+        <Link href={"/virtual-tryon/new"} className="w-full sm:w-auto mb-8">
+          <button className="w-full sm:w-auto rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 cursor-pointer">
             Conduct New Try-on
           </button>
         </Link>
