@@ -145,7 +145,7 @@ export default function VirtualTryOn() {
   }
 
   return (
-    <div className="mt-16 px-4 sm:px-0">
+    <div className="mt-8 px-4 sm:px-0">
       <div className="flex items-start justify-between">
         <div>
           <h3 className="text-3xl font-semibold text-gray-900">
