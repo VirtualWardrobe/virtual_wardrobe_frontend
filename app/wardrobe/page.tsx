@@ -205,10 +205,10 @@ export default function Wardrobe() {
 
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="pt-16 pb-6">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900">
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900">
               Your Wardrobe
             </h1>
-            <p className="mt-1 text-sm/6 text-gray-600">
+            <p className="mt-1 text-base text-gray-600">
               Here you can view and manage the items in your wardrobe.
             </p>
           </div>

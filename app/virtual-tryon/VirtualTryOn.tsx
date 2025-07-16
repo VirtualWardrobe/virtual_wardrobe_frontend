@@ -4,6 +4,9 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import Loader from "../components/Loader";
 import ErrorModal from "../components/ErrorModal";
+import ConfirmModal from "../components/ConfirmModal";
+import SuccessModal from "../components/SuccessModal";
+import Link from "next/link";
 
 interface TryOnResult {
   id: string | number;
@@ -16,8 +19,34 @@ interface TryOnResult {
 export default function VirtualTryOn() {
   const [results, setResults] = useState<TryOnResult[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+
+  // Modal states
   const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [selectedTryOnId, setSelectedTryOnId] = useState<
+    string | number | null
+  >(null);
+
+  const [modals, setModals] = useState({
+    error: false,
+    success: false,
+    confirm: false,
+  });
+
+  // Helpers for modals
+  const handleModalError = (message: string) => {
+    setErrorMessage(message);
+    setModals((prev) => ({ ...prev, error: true }));
+  };
+
+  const handleModalSuccess = (message: string) => {
+    setSuccessMessage(message);
+    setModals((prev) => ({ ...prev, success: true }));
+  };
+
+  const closeAllModals = () => {
+    setModals({ error: false, success: false, confirm: false });
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -36,48 +65,79 @@ export default function VirtualTryOn() {
             },
           }
         );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
+
         const data = await response.json();
-        if (data.success) {
+        if (response.ok && data.success) {
           setResults(data.data.items);
         } else {
-          setErrorMessage(data.detail || "Something went wrong.");
-          setIsErrorModalOpen(true);
+          throw new Error(data.detail || "Something went wrong.");
         }
       } catch (error) {
-        console.error("Error fetching virtual try-on history:", error);
-        setErrorMessage(
-          "An error occurred while fetching your virtual try-on history. Please try again later."
-        );
-        setIsErrorModalOpen(true);
+        const message =
+          error instanceof Error
+            ? error.message
+            : "Failed to load try-on history.";
+        handleModalError(message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData().catch((err) => {
-      console.error("Fetch error:", err);
-    });
+    fetchData().catch(console.error);
   }, []);
 
-  if (loading) {
-    return <Loader />;
-  }
+  const handleDeleteClick = (id: string | number) => {
+    setSelectedTryOnId(id);
+    setModals((prev) => ({ ...prev, confirm: true }));
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!selectedTryOnId) return;
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/virtual-tryon/${selectedTryOnId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setResults((prev) =>
+          prev.filter((item) => item.id !== selectedTryOnId)
+        );
+        handleModalSuccess("Try-on entry deleted successfully.");
+      } else {
+        throw new Error(data.detail || "Failed to delete try-on entry.");
+      }
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Error deleting try-on entry.";
+      handleModalError(message);
+    } finally {
+      setModals((prev) => ({ ...prev, confirm: false }));
+      setSelectedTryOnId(null);
+    }
+  };
+
+  if (loading) return <Loader />;
 
   if (results.length === 0) {
     return (
       <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-        <dt className="text-sm/6 font-medium text-gray-900">
-          Virtual Try-on History
-        </dt>
+        <dt className="text-sm/6 font-medium text-gray-900">Virtual Try-on</dt>
         <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">
-          No virtual try-on history available.
+          No virtual try-ons available.
         </dd>
         <ErrorModal
-          show={isErrorModalOpen}
-          onClose={() => setIsErrorModalOpen(false)}
+          show={modals.error}
+          onClose={closeAllModals}
           message={errorMessage}
         />
       </div>
@@ -88,88 +148,100 @@ export default function VirtualTryOn() {
     <div className="mt-16 px-4 sm:px-0">
       <div className="flex items-start justify-between">
         <div>
-          <h3 className="text-2xl font-semibold text-gray-900">
-            Virtual Try-on History
+          <h3 className="text-3xl font-semibold text-gray-900">
+            Virtual Try-on
           </h3>
-          <p className="mt-1 max-w-2xl text-sm text-gray-500 mb-6">
+          <p className="mt-1 max-w-2xl text-base text-gray-500 mb-6">
             Here are the clothes you have tried on virtually.
           </p>
         </div>
-
-        <div className="flex gap-2 ml-auto">
+        <Link href={"/virtual-tryon/new"}>
           <button className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 cursor-pointer">
-            Conduct New Try-On
+            Conduct New Try-on
           </button>
-        </div>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-3">
         {results.map((result) => (
           <div
             key={result.id}
-            className="grid grid-cols-3 gap-4 rounded-md bg-white p-4 shadow-md"
+            className="flex flex-col justify-between rounded-md bg-white p-4 shadow-md h-full"
           >
-            {/* Left column: human and garment images */}
-            <div className="col-span-1 flex flex-col justify-between gap-6">
-              {/* Human Image */}
-              <div className="flex flex-col items-center">
-                <div className="w-full overflow-hidden rounded bg-gray-100">
+            <div className="grid grid-cols-3 gap-4">
+              {/* Human & Garment Images */}
+              <div className="col-span-1 flex flex-col gap-6">
+                {[
+                  { src: result.human_image_url, label: "Original" },
+                  { src: result.garment_image_url, label: "Garment" },
+                ].map(({ src, label }, idx) => (
+                  <div key={idx} className="flex flex-col items-center">
+                    <div className="w-full overflow-hidden rounded bg-gray-100">
+                      <Image
+                        src={src}
+                        alt={label}
+                        width={300}
+                        height={300}
+                        className="h-full w-full object-cover object-center"
+                      />
+                    </div>
+                    <p className="mt-2 text-sm text-gray-600">{label}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Result Image */}
+              <div className="col-span-2 flex flex-col items-center">
+                <div className="w-full flex-1 overflow-hidden rounded bg-gray-100">
                   <Image
-                    src={result.human_image_url}
-                    alt="Human Image"
-                    width={300}
-                    height={300}
+                    src={result.result_image_url}
+                    alt="Result"
+                    width={600}
+                    height={600}
                     className="h-full w-full object-cover object-center"
                   />
                 </div>
-                <p className="mt-2 text-sm text-gray-600">Original</p>
-              </div>
-
-              {/* Garment Image */}
-              <div className="flex flex-col items-center">
-                <div className="w-full overflow-hidden rounded bg-gray-100">
-                  <Image
-                    src={result.garment_image_url}
-                    alt="Garment Image"
-                    width={300}
-                    height={300}
-                    className="h-full w-full object-cover object-center"
-                  />
-                </div>
-                <p className="mt-2 text-sm text-gray-600">Garment</p>
+                <p className="mt-2 text-sm text-gray-600">Result</p>
               </div>
             </div>
 
-            {/* Right column: result image */}
-            <div className="col-span-2 flex flex-col items-center">
-              <div className="w-full flex-1 overflow-hidden rounded bg-gray-100">
-                <Image
-                  src={result.result_image_url}
-                  alt="Virtual Try-On Result"
-                  width={600}
-                  height={600}
-                  className="h-full w-full object-cover object-center"
-                />
-              </div>
-              <p className="mt-2 text-sm text-gray-600">Result</p>
-            </div>
-
-            {/* Date below full row */}
-            <div className="col-span-3 mt-2 text-right text-sm text-gray-600">
-              Tried on:{" "}
-              {new Date(result.created_at).toLocaleString("en-US", {
-                dateStyle: "medium",
-                timeStyle: "short",
-              })}
+            {/* Bottom: Delete + Timestamp */}
+            <div className="mt-4 flex justify-between items-center text-sm text-gray-600">
+              <button
+                onClick={() => handleDeleteClick(result.id)}
+                className="mt-2 rounded-md bg-red-600 px-3 py-2 text-xs font-semibold text-white hover:bg-red-500 cursor-pointer"
+              >
+                Delete
+              </button>
+              <span>
+                Tried on:{" "}
+                {new Date(result.created_at).toLocaleString("en-US", {
+                  dateStyle: "medium",
+                  timeStyle: "short",
+                })}
+              </span>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Error Modal */}
+      {/* Modals */}
+      <ConfirmModal
+        show={modals.confirm}
+        onClose={closeAllModals}
+        onConfirm={handleConfirmDelete}
+        message="Are you sure you want to delete this try-on entry?"
+      />
+
+      <SuccessModal
+        show={modals.success}
+        onClose={closeAllModals}
+        message={successMessage}
+      />
+
       <ErrorModal
-        show={isErrorModalOpen}
-        onClose={() => setIsErrorModalOpen(false)}
+        show={modals.error}
+        onClose={closeAllModals}
         message={errorMessage}
       />
     </div>

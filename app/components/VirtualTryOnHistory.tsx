@@ -70,7 +70,7 @@ export default function VirtualTryOnHistory() {
               <div className="w-full flex-1 overflow-hidden rounded bg-gray-100">
                 <Image
                   src={result.result_image_url}
-                  alt="Virtual Try-On Result"
+                  alt="Virtual Try-on Result"
                   width={600}
                   height={600}
                   className="h-full w-full object-cover object-center"

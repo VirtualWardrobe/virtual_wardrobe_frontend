@@ -113,6 +113,7 @@ export default function Example() {
                   type="text"
                   autoComplete="name"
                   required
+                  placeholder="John Doe"
                   value={formData.name}
                   onChange={handleChange}
                   className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-600"
@@ -134,6 +135,7 @@ export default function Example() {
                   type="email"
                   autoComplete="email"
                   required
+                  placeholder="johndoe@gmail.com"
                   value={formData.email}
                   onChange={handleChange}
                   className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-600"
@@ -154,6 +156,7 @@ export default function Example() {
                   name="message"
                   rows={4}
                   required
+                  placeholder="Your message here..."
                   value={formData.message}
                   onChange={handleChange}
                   className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-600"
