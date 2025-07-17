@@ -14,7 +14,7 @@ export default function PhoneNumberModal({ show, onClose, onSuccess }: Props) {
   const [error, setError] = useState("");
 
   const handleSubmit = async () => {
-    if (!phone.match(/^\d{10}$/)) {
+    if (!/^\d{10}$/.test(phone)) {
       setError("Enter a valid 10-digit phone number.");
       return;
     }
