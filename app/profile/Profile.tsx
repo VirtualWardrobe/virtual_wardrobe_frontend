@@ -8,8 +8,9 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import VirtualTryOnHistory from "../components/VirtualTryOnHistory";
+import ProfilePicUploadModal from "../components/ProfilePicUploadModal";
+import PhoneNumberModal from "../components/PhoneNumberModal";
 import { useUser } from "../context/UserContext";
-
 import ErrorModal from "../components/ErrorModal";
 import ConfirmModal from "../components/ConfirmModal";
 import SuccessModal from "../components/SuccessModal";
@@ -20,6 +21,48 @@ export default function Profile() {
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false);
+
+  const deleteProfilePic = async () => {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/user?delete_profile_pic=true`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: new FormData(),
+      }
+    );
+    const data = await res.json();
+    if (data.success) {
+      fetchUserData();
+    } else {
+      setErrorMessage("Failed to remove profile picture.");
+      setIsErrorModalOpen(true);
+    }
+  };
+
+  const deletePhoneNumber = async () => {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/user?delete_phone_number=true&delete_profile_pic=false`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: new FormData(),
+      }
+    );
+    const data = await res.json();
+    if (data.success) {
+      fetchUserData();
+    } else {
+      setErrorMessage("Failed to remove phone number.");
+      setIsErrorModalOpen(true);
+    }
+  };
 
   useEffect(() => {
     fetchUserData();
@@ -81,7 +124,7 @@ export default function Profile() {
               Profile Picture
             </dt>
             <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">
-              <div className="flex items-center">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                 <Image
                   src={
                     user.profile_pic
@@ -89,20 +132,38 @@ export default function Profile() {
                       : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
                   }
                   alt="Profile picture"
-                  width={50}
-                  height={50}
-                  className="rounded-full"
+                  width={90}
+                  height={90}
+                  className="object-cover"
                 />
-                <span className="ml-4 text-sm/6 text-gray-500">
-                  {user.profile_pic ? "Uploaded" : "No profile picture"}
-                </span>
-                {!user.profile_pic && (
-                  <Link href="/upload-profile-pic">
-                    <button className="ml-6 rounded-md bg-indigo-600 px-3 py-2 text-xs font-semibold text-white shadow-xs hover:bg-indigo-500">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                  <span className="text-sm/6 text-gray-500">
+                    {user.profile_pic ? "Uploaded" : "No profile picture"}
+                  </span>
+                  {user.profile_pic ? (
+                    <div className="flex gap-3">
+                      <button
+                        onClick={() => setIsUploadModalOpen(true)}
+                        className="rounded-md bg-indigo-600 px-3 py-2 text-xs font-semibold text-white hover:bg-indigo-500"
+                      >
+                        Update
+                      </button>
+                      <button
+                        onClick={deleteProfilePic}
+                        className="rounded-md bg-red-600 px-3 py-2 text-xs font-semibold text-white hover:bg-red-500"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => setIsUploadModalOpen(true)}
+                      className="rounded-md bg-indigo-600 px-3 py-2 text-xs font-semibold text-white hover:bg-indigo-500"
+                    >
                       Upload Now
                     </button>
-                  </Link>
-                )}
+                  )}
+                </div>
               </div>
             </dd>
           </div>
@@ -130,16 +191,33 @@ export default function Profile() {
             </dt>
             <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">
               {user.phone_number ? (
-                user.phone_number
+                <div className="flex items-center">
+                  <span>{user.phone_number}</span>
+                  <div className="ml-6 flex gap-3">
+                    <button
+                      onClick={() => setIsPhoneModalOpen(true)}
+                      className="rounded-md bg-indigo-600 px-3 py-2 text-xs font-semibold text-white hover:bg-indigo-500 cursor-pointer"
+                    >
+                      Update
+                    </button>
+                    <button
+                      onClick={deletePhoneNumber}
+                      className="rounded-md bg-red-600 px-3 py-2 text-xs font-semibold text-white hover:bg-red-500 cursor-pointer"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
               ) : (
                 <div>
                   <ExclamationTriangleIcon className="inline-block h-5 w-5 text-yellow-500" />
                   <span className="ml-2 text-gray-500">Not provided</span>
-                  <Link href="/add-phone-number">
-                    <button className="ml-6 rounded-md bg-indigo-600 px-3 py-2 text-xs font-semibold text-white shadow-xs hover:bg-indigo-500">
-                      Add Now
-                    </button>
-                  </Link>
+                  <button
+                    onClick={() => setIsPhoneModalOpen(true)}
+                    className="ml-6 rounded-md bg-indigo-600 px-3 py-2 text-xs font-semibold text-white shadow-xs hover:bg-indigo-500 cursor-pointer"
+                  >
+                    Add Now
+                  </button>
                 </div>
               )}
             </dd>
@@ -165,40 +243,6 @@ export default function Profile() {
                     Verify Now
                   </button>
                 </Link>
-              )}
-            </dd>
-          </div>
-
-          {/* Phone Verified */}
-          <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt className="text-sm/6 font-medium text-gray-900">
-              Phone Verified
-            </dt>
-            <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">
-              {!user.phone_number ? (
-                <div>
-                  <ExclamationTriangleIcon className="inline-block h-5 w-5 text-yellow-500" />
-                  <span className="ml-2 text-gray-500">
-                    Phone number required for verification
-                  </span>
-                </div>
-              ) : user.is_phone_verified ? (
-                <div>
-                  <CheckBadgeIcon className="inline-block h-5 w-5 text-green-500" />
-                  <span className="ml-2 text-sm/6 text-gray-500">Verified</span>
-                </div>
-              ) : (
-                <div>
-                  <ExclamationTriangleIcon className="inline-block h-5 w-5 text-yellow-500" />
-                  <span className="ml-2 text-sm/6 text-gray-500">
-                    Verification pending
-                  </span>
-                  <Link href="/verify-phone">
-                    <button className="ml-6 rounded-md bg-indigo-600 px-3 py-2 text-xs font-semibold text-white hover:bg-indigo-500">
-                      Verify Now
-                    </button>
-                  </Link>
-                </div>
               )}
             </dd>
           </div>
@@ -266,6 +310,18 @@ export default function Profile() {
         show={isErrorModalOpen}
         onClose={() => setIsErrorModalOpen(false)}
         message={errorMessage}
+      />
+
+      <ProfilePicUploadModal
+        show={isUploadModalOpen}
+        onClose={() => setIsUploadModalOpen(false)}
+        onSuccess={() => fetchUserData()}
+      />
+
+      <PhoneNumberModal
+        show={isPhoneModalOpen}
+        onClose={() => setIsPhoneModalOpen(false)}
+        onSuccess={() => fetchUserData()}
       />
     </div>
   );

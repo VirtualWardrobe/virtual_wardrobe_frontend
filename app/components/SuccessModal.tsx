@@ -16,7 +16,7 @@ export default function SuccessModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl p-6 w-80 text-center shadow-lg">
+      <div className="bg-white rounded-2xl p-6 w-full max-w-sm mx-8 text-center shadow-lg">
         <CheckCircleIcon className="mx-auto h-12 w-12 text-green-600 mb-4" />
         <h2 className="text-lg font-semibold text-gray-900">{message}</h2>
         <button

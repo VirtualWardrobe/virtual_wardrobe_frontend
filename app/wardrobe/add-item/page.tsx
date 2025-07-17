@@ -87,7 +87,7 @@ export default function AddItem() {
     <ProtectedRoute>
       <form
         onSubmit={handleSubmit}
-        className="flex items-center justify-center min-h-screen px-4 mt-24 sm:mt-24 lg:mt-0"
+        className="flex items-center justify-center min-h-screen px-4 mt-16 sm:mt-24 lg:mt-0"
       >
         <div className="space-y-8 max-w-2xl w-full">
           <div className="pb-12">

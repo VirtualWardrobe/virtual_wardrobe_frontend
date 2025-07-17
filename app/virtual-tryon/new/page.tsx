@@ -94,7 +94,7 @@ export default function VirtualTryOnForm() {
         onClose={() => setShowError(false)}
       />
 
-      <div className="flex h-screen justify-center items-center -mt-6 p-4">
+      <div className="flex h-screen justify-center items-center -mt-4 p-4">
         <form onSubmit={handleSubmit} className="space-y-8 max-w-2xl">
           <h2 className="text-3xl font-semibold text-gray-900 mb-2">
             New Virtual Try-on

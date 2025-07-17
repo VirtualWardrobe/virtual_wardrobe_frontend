@@ -17,7 +17,7 @@ export default function ConfirmModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
-      <div className="bg-white rounded-xl p-6 w-96 shadow-lg text-center">
+      <div className="bg-white rounded-xl p-6 w-full max-w-sm mx-8 shadow-lg text-center">
         <p className="text-md font-medium text-gray-800 mb-6">{message}</p>
         <div className="flex justify-center gap-4">
           <button

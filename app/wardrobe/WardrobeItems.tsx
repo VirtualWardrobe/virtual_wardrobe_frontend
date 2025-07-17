@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import Loader from "../components/Loader";
 import SuccessModal from "../components/SuccessModal";
 import ConfirmModal from "../components/ConfirmModal";
@@ -123,21 +122,6 @@ export default function WardrobeItems() {
 
   return (
     <div className="mx-auto max-w-2xl lg:max-w-7xl lg:px-4">
-      <div className="mb-6 flex items-center justify-center gap-x-4">
-        <Link
-          href="/wardrobe/add-item"
-          className="w-1/2 text-center rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          Add Item to Wardrobe
-        </Link>
-        <Link
-          href="/virtual-tryon"
-          className="w-1/2 text-center rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          View your Virtual Try-ons
-        </Link>
-      </div>
-
       {products.length === 0 ? (
         <div className="text-center text-gray-500 text-lg py-8">
           You have no wardrobe items yet.

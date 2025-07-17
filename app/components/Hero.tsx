@@ -31,8 +31,9 @@ export default function Hero() {
               Welcome to your Virtual Wardrobe
             </h1>
             <p className="mt-8 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8">
-              &quot;Your Fashion, Digitized and Personalized!&quot; Step inside
-              your virtual wardrobe and unlock endless outfit possibilities.
+              Your Fashion, Digitized and Personalized! Step inside your virtual
+              wardrobe to manage your clothing and unlock endless outfit
+              possibilities.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <Link
