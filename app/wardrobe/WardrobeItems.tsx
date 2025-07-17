@@ -125,7 +125,7 @@ export default function WardrobeItems() {
     <div className="mx-auto max-w-2xl lg:max-w-7xl lg:px-4">
       <div className="mb-6 flex items-center justify-center gap-x-4">
         <Link
-          href="/add-item"
+          href="/wardrobe/add-item"
           className="w-1/2 text-center rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           Add Item to Wardrobe

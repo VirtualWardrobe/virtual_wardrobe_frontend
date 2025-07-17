@@ -2,9 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { useState, FormEvent } from "react";
-import ProtectedRoute from "../components/ProtectedRoute";
-import SuccessModal from "../components/SuccessModal";
-import ErrorModal from "../components/ErrorModal";
+import ProtectedRoute from "@/app/components/ProtectedRoute";
+import SuccessModal from "@/app/components/SuccessModal";
+import ErrorModal from "@/app/components/ErrorModal";
 
 export default function AddItem() {
   const [category, setCategory] = useState("");

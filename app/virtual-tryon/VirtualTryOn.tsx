@@ -206,14 +206,14 @@ export default function VirtualTryOn() {
             </div>
 
             {/* Bottom: Delete + Timestamp */}
-            <div className="mt-4 flex justify-between items-center text-sm text-gray-600">
+            <div className="mt-4 gap-6 flex justify-between items-center text-sm text-gray-600">
               <button
                 onClick={() => handleDeleteClick(result.id)}
                 className="mt-2 rounded-md bg-red-600 px-3 py-2 text-xs font-semibold text-white hover:bg-red-500 cursor-pointer"
               >
                 Delete
               </button>
-              <span>
+              <span className="text-right">
                 Tried on:{" "}
                 {new Date(result.created_at).toLocaleString("en-US", {
                   dateStyle: "medium",
