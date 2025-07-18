@@ -20,7 +20,13 @@ interface WardrobeItem {
   updated_at: string;
 }
 
-export default function WardrobeItems() {
+interface Props {
+  filters: {
+    [key: string]: string[];
+  };
+}
+
+export default function WardrobeItems({ filters }: Props) {
   const [products, setProducts] = useState<WardrobeItem[]>([]);
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -70,6 +76,33 @@ export default function WardrobeItems() {
       showError("Something went wrong while loading your wardrobe.");
     });
   }, []);
+
+  const matchesFilters = (item: WardrobeItem) => {
+    const categoryFilters = filters.category ?? [];
+    const typeFilters = filters.type ?? [];
+    const colorFilters = filters.color ?? [];
+    const sizeFilters = filters.size ?? [];
+
+    const categoryMatch =
+      categoryFilters.length === 0 ||
+      (item.category && categoryFilters.includes(item.category.toLowerCase()));
+
+    const typeMatch =
+      typeFilters.length === 0 ||
+      (item.type && typeFilters.includes(item.type.toLowerCase()));
+
+    const colorMatch =
+      colorFilters.length === 0 ||
+      (item.color && colorFilters.includes(item.color.toLowerCase()));
+
+    const sizeMatch =
+      sizeFilters.length === 0 ||
+      (item.size && sizeFilters.includes(item.size.toUpperCase()));
+
+    return categoryMatch && typeMatch && colorMatch && sizeMatch;
+  };
+
+  const filteredProducts = products.filter(matchesFilters);
 
   const handleDelete = async () => {
     if (!confirmItemId) return;
@@ -122,13 +155,13 @@ export default function WardrobeItems() {
 
   return (
     <div className="mx-auto max-w-2xl lg:max-w-7xl lg:px-4">
-      {products.length === 0 ? (
+      {filteredProducts.length === 0 ? (
         <div className="text-center text-gray-500 text-lg py-8">
-          You have no wardrobe items yet.
+          You have no wardrobe items.
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-x-2 gap-y-2 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-4 xl:gap-x-8">
-          {products.map((product) => (
+          {filteredProducts.map((product) => (
             <div
               key={product.id}
               className="group relative border p-2 rounded-lg shadow-sm"

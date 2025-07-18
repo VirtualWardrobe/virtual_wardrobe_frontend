@@ -128,24 +128,23 @@ export default function AddItem() {
                     "POLO",
                     "TANK_TOP",
                     "PANT",
-                    "JEAN",
-                    "SHORT",
+                    "JEANS",
+                    "SHORTS",
                     "SKIRT",
-                    "LEGGING",
-                    "SWEATPANT",
-                    "TROUSER",
+                    "LEGGINGS",
+                    "SWEATPANTS",
+                    "TROUSERS",
                     "JACKET",
                     "COAT",
                     "BLAZER",
                     "CARDIGAN",
                     "VEST",
                     "SUIT",
-                    "DRESS",
-                    "FORMAL_SHIRT",
+                    "TUXEDO",
                     "INNERWEAR",
-                    "PAJAMA",
+                    "PAJAMAS",
                     "ROBE",
-                    "SOCK",
+                    "SOCKS",
                     "UNDERWEAR",
                     "SPORTSWEAR",
                     "SWIMWEAR",
@@ -169,14 +168,35 @@ export default function AddItem() {
                 >
                   Type
                 </label>
-                <input
+                <select
                   id="type"
                   name="type"
-                  type="text"
                   value={type}
                   onChange={(e) => setType(e.target.value)}
-                  className="block w-full px-4 py-4 border border-gray-300 rounded-lg text-gray-700 bg-white placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition"
-                />
+                  className="block w-full appearance-none px-4 py-3 pr-12 bg-white border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none cursor-pointer bg-no-repeat bg-[right_1rem_center] bg-[length:1rem_1rem]"
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg fill='gray' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' d='M5.23 7.21a.75.75 0 011.06.02L10 11.043l3.71-3.812a.75.75 0 111.08 1.04l-4.24 4.365a.75.75 0 01-1.08 0L5.25 8.27a.75.75 0 01-.02-1.06z' clip-rule='evenodd' /%3E%3C/svg%3E")`,
+                  }}
+                >
+                  <option value="" hidden>
+                    Select Type
+                  </option>
+                  {[
+                    "CASUAL",
+                    "FORMAL",
+                    "SPORTS",
+                    "ETHNIC",
+                    "PARTY",
+                    "BEACH",
+                  ].map((item) => (
+                    <option key={item} value={item}>
+                      {item
+                        .replace(/_/g, " ")
+                        .toLowerCase()
+                        .replace(/\b\w/g, (l) => l.toUpperCase())}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="sm:col-span-3">
@@ -190,9 +210,10 @@ export default function AddItem() {
                   id="brand"
                   name="brand"
                   type="text"
+                  placeholder="Ex: Nike, Adidas, etc."
                   value={brand}
                   onChange={(e) => setBrand(e.target.value)}
-                  className="block w-full px-4 py-4 border border-gray-300 rounded-lg text-gray-700 bg-white placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition"
+                  className="block w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 bg-white placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition"
                 />
               </div>
 
@@ -203,14 +224,25 @@ export default function AddItem() {
                 >
                   Size
                 </label>
-                <input
+                <select
                   id="size"
                   name="size"
-                  type="text"
                   value={size}
                   onChange={(e) => setSize(e.target.value)}
-                  className="block w-full px-4 py-4 border border-gray-300 rounded-lg text-gray-700 bg-white placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition"
-                />
+                  className="block w-full appearance-none px-4 py-3 pr-12 bg-white border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none cursor-pointer bg-no-repeat bg-[right_1rem_center] bg-[length:1rem_1rem]"
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg fill='gray' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' d='M5.23 7.21a.75.75 0 011.06.02L10 11.043l3.71-3.812a.75.75 0 111.08 1.04l-4.24 4.365a.75.75 0 01-1.08 0L5.25 8.27a.75.75 0 01-.02-1.06z' clip-rule='evenodd' /%3E%3C/svg%3E")`,
+                  }}
+                >
+                  <option value="" hidden>
+                    Select Size
+                  </option>
+                  {["XS", "S", "M", "L", "XL", "XXL"].map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="sm:col-span-3">
@@ -220,14 +252,47 @@ export default function AddItem() {
                 >
                   Color
                 </label>
-                <input
+                <select
                   id="color"
                   name="color"
-                  type="text"
                   value={color}
                   onChange={(e) => setColor(e.target.value)}
-                  className="block w-full px-4 py-4 border border-gray-300 rounded-lg text-gray-700 bg-white placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition"
-                />
+                  className="block w-full appearance-none px-4 py-3 pr-12 bg-white border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none cursor-pointer bg-no-repeat bg-[right_1rem_center] bg-[length:1rem_1rem]"
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg fill='gray' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' d='M5.23 7.21a.75.75 0 011.06.02L10 11.043l3.71-3.812a.75.75 0 111.08 1.04l-4.24 4.365a.75.75 0 01-1.08 0L5.25 8.27a.75.75 0 01-.02-1.06z' clip-rule='evenodd' /%3E%3C/svg%3E")`,
+                  }}
+                >
+                  <option value="" hidden>
+                    Select Color
+                  </option>
+                  {[
+                    "BLACK",
+                    "WHITE",
+                    "GRAY",
+                    "RED",
+                    "BLUE",
+                    "YELLOW",
+                    "GREEN",
+                    "NAVY",
+                    "PURPLE",
+                    "BROWN",
+                    "BEIGE",
+                    "TAN",
+                    "KHAKI",
+                    "PINK",
+                    "MAROON",
+                    "OLIVE",
+                    "BURGUNDY",
+                    "CREAM",
+                    "CHARCOAL",
+                    "DENIM",
+                    "MULTICOLOR",
+                  ].map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="sm:col-span-3">
@@ -243,12 +308,12 @@ export default function AddItem() {
                   type="file"
                   accept="image/*"
                   onChange={(e) => setImage(e.target.files?.[0] || null)}
-                  className="block w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 bg-white file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:bg-indigo-100 file:text-indigo-600 hover:file:bg-indigo-200 transition cursor-pointer"
+                  className="block w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:bg-indigo-100 file:text-indigo-600 hover:file:bg-indigo-200 transition cursor-pointer"
                 />
               </div>
             </div>
 
-            <div className="mt-8 flex flex-col sm:flex-row justify-end gap-3">
+            <div className="mt-10 flex flex-col sm:flex-row justify-end gap-3">
               <button
                 type="button"
                 onClick={() => router.push("/wardrobe")}

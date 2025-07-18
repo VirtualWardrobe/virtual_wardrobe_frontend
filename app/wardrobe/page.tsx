@@ -17,33 +17,37 @@ import WardrobeItems from "./WardrobeItems";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Link from "next/link";
 
-const subCategories = [
-  { name: "Shirts", href: "#" },
-  { name: "T-shirts", href: "#" },
-  { name: "Pants", href: "#" },
-  { name: "Jeans", href: "#" },
-  { name: "Innerwear", href: "#" },
-];
 const filters = [
+  {
+    id: "category",
+    name: "Category",
+    options: [
+      { value: "shirt", label: "Shirts" },
+      { value: "t-shirt", label: "T-shirts" },
+      { value: "pant", label: "Pants" },
+      { value: "jeans", label: "Jeans" },
+      { value: "innerwear", label: "Innerwear" },
+    ],
+  },
+  {
+    id: "type",
+    name: "Type",
+    options: [
+      { value: "casual", label: "Casual", checked: true },
+      { value: "formal", label: "Formal", checked: false },
+      { value: "sport", label: "Sport", checked: false },
+    ],
+  },
   {
     id: "color",
     name: "Color",
     options: [
       { value: "white", label: "White", checked: false },
-      { value: "beige", label: "Beige", checked: false },
+      { value: "black", label: "Black", checked: false },
+      { value: "red", label: "Red", checked: false },
+      { value: "green", label: "Green", checked: false },
       { value: "blue", label: "Blue", checked: true },
       { value: "brown", label: "Brown", checked: false },
-      { value: "green", label: "Green", checked: false },
-      { value: "purple", label: "Purple", checked: false },
-    ],
-  },
-  {
-    id: "category",
-    name: "Category",
-    options: [
-      { value: "casuals", label: "Casuals", checked: true },
-      { value: "formals", label: "Formals", checked: false },
-      { value: "sports", label: "Sports", checked: false },
     ],
   },
   {
@@ -62,6 +66,30 @@ const filters = [
 
 export default function Wardrobe() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState<{
+    [key: string]: string[];
+  }>({
+    category: [],
+    color: [],
+    type: [],
+    size: [],
+  });
+
+  const handleFilterChange = (
+    sectionId: string,
+    value: string,
+    checked: boolean
+  ) => {
+    setSelectedFilters((prev) => {
+      const values = new Set(prev[sectionId] || []);
+      if (checked) {
+        values.add(value);
+      } else {
+        values.delete(value);
+      }
+      return { ...prev, [sectionId]: Array.from(values) };
+    });
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -110,17 +138,6 @@ export default function Wardrobe() {
 
                   {/* Filters */}
                   <form className="mt-4 border-t border-gray-200">
-                    <h3 className="sr-only">Categories</h3>
-                    <ul className="px-2 py-3 font-medium text-gray-900">
-                      {subCategories.map((category) => (
-                        <li key={category.name}>
-                          <a href={category.href} className="block px-2 py-3">
-                            {category.name}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-
                     {filters.map((section) => (
                       <Disclosure
                         key={section.id}
@@ -144,8 +161,18 @@ export default function Wardrobe() {
                               <div key={option.value} className="flex gap-3">
                                 <div className="flex h-5 items-center">
                                   <input
-                                    defaultValue={option.value}
-                                    id={`filter-mobile-${section.id}-${optionIdx}`}
+                                    value={option.value}
+                                    checked={selectedFilters[
+                                      section.id
+                                    ]?.includes(option.value)}
+                                    onChange={(e) =>
+                                      handleFilterChange(
+                                        section.id,
+                                        option.value,
+                                        e.target.checked
+                                      )
+                                    }
+                                    id={`filter-${section.id}-${optionIdx}`}
                                     name={`${section.id}[]`}
                                     type="checkbox"
                                     className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
@@ -170,7 +197,7 @@ export default function Wardrobe() {
           </Dialog>
         </Transition>
 
-        <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <main className="mx-auto h-screen max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="pt-16 pb-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
@@ -222,17 +249,9 @@ export default function Wardrobe() {
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
               {/* Filters */}
               <form className="hidden lg:block">
-                <h3 className="text-xl font-semibold text-gray-900 mb-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-4">
                   Filters
                 </h3>
-
-                <ul className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900">
-                  {subCategories.map((category) => (
-                    <li key={category.name}>
-                      <a href={category.href}>{category.name}</a>
-                    </li>
-                  ))}
-                </ul>
 
                 {filters.map((section) => (
                   <Disclosure
@@ -241,7 +260,7 @@ export default function Wardrobe() {
                     className="border-b border-gray-200 py-6"
                   >
                     <h3 className="-my-3 flow-root">
-                      <DisclosureButton className="group flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
+                      <DisclosureButton className="group flex w-full items-center justify-between py-3 text-sm text-gray-400 hover:text-gray-500 cursor-pointer">
                         <span className="font-medium text-gray-900">
                           {section.name}
                         </span>
@@ -259,13 +278,23 @@ export default function Wardrobe() {
                             className="flex items-center gap-3"
                           >
                             <input
-                              defaultValue={option.value}
-                              defaultChecked={option.checked}
+                              value={option.value}
+                              checked={selectedFilters[section.id]?.includes(
+                                option.value
+                              )}
+                              onChange={(e) =>
+                                handleFilterChange(
+                                  section.id,
+                                  option.value,
+                                  e.target.checked
+                                )
+                              }
                               id={`filter-${section.id}-${optionIdx}`}
                               name={`${section.id}[]`}
                               type="checkbox"
-                              className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                              className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
                             />
+
                             <label
                               htmlFor={`filter-${section.id}-${optionIdx}`}
                               className="text-sm text-gray-600"
@@ -282,7 +311,7 @@ export default function Wardrobe() {
 
               {/* Product grid */}
               <div className="lg:col-span-3">
-                <WardrobeItems />
+                <WardrobeItems filters={selectedFilters} />
               </div>
             </div>
           </section>
