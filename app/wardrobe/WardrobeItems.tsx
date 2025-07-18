@@ -160,7 +160,7 @@ export default function WardrobeItems({ filters }: Props) {
           You have no wardrobe items.
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-x-2 gap-y-2 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-4 xl:gap-x-8">
+        <div className="grid grid-cols-2 gap-x-2 gap-y-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-4 xl:gap-x-8">
           {filteredProducts.map((product) => (
             <div
               key={product.id}

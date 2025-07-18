@@ -197,7 +197,7 @@ export default function Wardrobe() {
           </Dialog>
         </Transition>
 
-        <main className="mx-auto h-screen max-w-7xl px-4 sm:px-6 lg:px-8">
+        <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="pt-16 pb-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
@@ -246,7 +246,7 @@ export default function Wardrobe() {
               Products
             </h2>
 
-            <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-x-8 gap-y-10 min-h-[calc(100vh-300px)] items-start">
               {/* Filters */}
               <form className="hidden lg:block">
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">

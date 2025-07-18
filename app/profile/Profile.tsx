@@ -144,13 +144,13 @@ export default function Profile() {
                     <div className="flex gap-3">
                       <button
                         onClick={() => setIsUploadModalOpen(true)}
-                        className="rounded-md bg-indigo-600 px-3 py-2 text-xs font-semibold text-white hover:bg-indigo-500"
+                        className="rounded-md bg-indigo-600 px-3 py-2 text-xs font-semibold text-white hover:bg-indigo-500 cursor-pointer"
                       >
                         Update
                       </button>
                       <button
                         onClick={deleteProfilePic}
-                        className="rounded-md bg-red-600 px-3 py-2 text-xs font-semibold text-white hover:bg-red-500"
+                        className="rounded-md bg-red-600 px-3 py-2 text-xs font-semibold text-white hover:bg-red-500 cursor-pointer"
                       >
                         Remove
                       </button>
