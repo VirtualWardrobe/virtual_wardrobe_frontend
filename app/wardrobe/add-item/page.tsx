@@ -287,9 +287,12 @@ export default function AddItem() {
                     "CHARCOAL",
                     "DENIM",
                     "MULTICOLOR",
-                  ].map((c) => (
-                    <option key={c} value={c}>
-                      {c}
+                  ].map((item) => (
+                    <option key={item} value={item}>
+                      {item
+                        .replace(/_/g, " ")
+                        .toLowerCase()
+                        .replace(/\b\w/g, (l) => l.toUpperCase())}
                     </option>
                   ))}
                 </select>

@@ -158,7 +158,7 @@ export default function Profile() {
                   ) : (
                     <button
                       onClick={() => setIsUploadModalOpen(true)}
-                      className="rounded-md bg-indigo-600 px-3 py-2 text-xs font-semibold text-white hover:bg-indigo-500"
+                      className="rounded-md bg-indigo-600 px-3 py-2 text-xs font-semibold text-white hover:bg-indigo-500 cursor-pointer"
                     >
                       Upload Now
                     </button>
