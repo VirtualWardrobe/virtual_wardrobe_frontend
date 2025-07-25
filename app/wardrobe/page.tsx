@@ -23,7 +23,7 @@ const filters = [
     name: "Category",
     options: [
       { value: "shirt", label: "Shirts" },
-      { value: "t-shirt", label: "T-shirts" },
+      { value: "t_shirt", label: "T-shirts" },
       { value: "pant", label: "Pants" },
       { value: "jeans", label: "Jeans" },
       { value: "innerwear", label: "Innerwear" },
