@@ -79,17 +79,20 @@ export default function FeaturesPage() {
       </p>
 
       <div className="space-y-8 sm:space-y-10">
-        {features.map((feature, idx) => (
+        {features.map((feature) => (
           <section
-            key={idx}
+            key={feature.title}
             className="p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-md"
           >
             <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">
               {feature.title}
             </h2>
             <ul className="space-y-3 pl-1">
-              {feature.points.map((point, i) => (
-                <li key={i} className="flex items-start gap-3 text-gray-700">
+              {feature.points.map((point) => (
+                <li
+                  key={point}
+                  className="flex items-start gap-3 text-gray-700"
+                >
                   <CheckCircleIcon className="h-5 w-5 text-green-600 mt-1 flex-shrink-0 min-w-[20px]" />
                   <span className="text-sm sm:text-base">{point}</span>
                 </li>

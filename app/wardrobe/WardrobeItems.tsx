@@ -78,7 +78,7 @@ export default function WardrobeItems({ filters }: Props) {
       }
     };
 
-    void fetchProducts();
+    fetchProducts().catch(console.error);
   }, []);
 
   const matchesFilters = (item: WardrobeItem) => {
@@ -181,7 +181,7 @@ export default function WardrobeItems({ filters }: Props) {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: body,
+        body,
       });
 
       const data = await res.json();
