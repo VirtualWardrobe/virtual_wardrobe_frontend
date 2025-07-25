@@ -78,7 +78,7 @@ export default function WardrobeItems({ filters }: Props) {
       }
     };
 
-    fetchProducts();
+    void fetchProducts();
   }, []);
 
   const matchesFilters = (item: WardrobeItem) => {
@@ -298,7 +298,10 @@ export default function WardrobeItems({ filters }: Props) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {/* Category */}
               <div>
-                <label className="block text-base font-medium text-gray-800 mb-2">
+                <label
+                  htmlFor="updateCategory"
+                  className="block text-base font-medium text-gray-800 mb-2"
+                >
                   Category
                 </label>
                 <select
@@ -358,7 +361,10 @@ export default function WardrobeItems({ filters }: Props) {
 
               {/* Type */}
               <div>
-                <label className="block text-base font-medium text-gray-800 mb-2">
+                <label
+                  htmlFor="updateType"
+                  className="block text-base font-medium text-gray-800 mb-2"
+                >
                   Type
                 </label>
                 <select
@@ -393,7 +399,10 @@ export default function WardrobeItems({ filters }: Props) {
 
               {/* Brand */}
               <div>
-                <label className="block text-base font-medium text-gray-800 mb-2">
+                <label
+                  htmlFor="updateBrand"
+                  className="block text-base font-medium text-gray-800 mb-2"
+                >
                   Brand
                 </label>
                 <input
@@ -409,7 +418,10 @@ export default function WardrobeItems({ filters }: Props) {
 
               {/* Size */}
               <div>
-                <label className="block text-base font-medium text-gray-800 mb-2">
+                <label
+                  htmlFor="updateSize"
+                  className="block text-base font-medium text-gray-800 mb-2"
+                >
                   Size
                 </label>
                 <select
@@ -435,7 +447,10 @@ export default function WardrobeItems({ filters }: Props) {
 
               {/* Color */}
               <div>
-                <label className="block text-base font-medium text-gray-800 mb-2">
+                <label
+                  htmlFor="updateColor"
+                  className="block text-base font-medium text-gray-800 mb-2"
+                >
                   Color
                 </label>
                 <select
@@ -483,7 +498,10 @@ export default function WardrobeItems({ filters }: Props) {
 
               {/* Image Upload */}
               <div>
-                <label className="block text-base font-medium text-gray-800 mb-2">
+                <label
+                  htmlFor="updateImage"
+                  className="block text-base font-medium text-gray-800 mb-2"
+                >
                   Image
                 </label>
                 <input
