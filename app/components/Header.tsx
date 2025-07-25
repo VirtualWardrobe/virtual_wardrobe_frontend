@@ -107,9 +107,9 @@ export default function Header() {
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           {isLoggedIn ? (
             <Menu as="div" className="relative">
-              <MenuButton className="text-gray-700 hover:text-indigo-600">
+              <MenuButton className="text-gray-700 hover:text-indigo-600 flex items-center">
                 <UserCircleIcon
-                  className="h-9 w-9 cursor-pointer"
+                  className="h-11 w-11 cursor-pointer"
                   aria-hidden="true"
                 />
               </MenuButton>
