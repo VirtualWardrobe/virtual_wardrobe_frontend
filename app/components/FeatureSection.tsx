@@ -66,7 +66,7 @@ export default function FeatureSection() {
           </div>
           <Image
             alt="Product screenshot"
-            src="https://storage.googleapis.com/vw-media-bucket/wardrobe-screenshot.png"
+            src="https://storage.googleapis.com/vw-media-bucket/wardrobe-ss.png"
             width={2432}
             height={1442}
             className="w-3xl max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-228 md:-ml-4 lg:-ml-0"
