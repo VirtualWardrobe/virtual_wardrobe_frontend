@@ -241,7 +241,7 @@ export default function Wardrobe() {
             </button>
           </div>
 
-          <section aria-labelledby="products-heading" className="pt-6 pb-12">
+          <section aria-labelledby="products-heading" className="pt-6 pb-6">
             <h2 id="products-heading" className="sr-only">
               Products
             </h2>

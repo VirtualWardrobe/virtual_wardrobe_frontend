@@ -240,7 +240,7 @@ export default function WardrobeItems({ filters }: Props) {
                   product.image_url ||
                   "https://dummyimage.com/300x600/cccccc/000000&text=No+Image"
                 }
-                className="aspect-square w-full rounded-md bg-gray-200 object-cover lg:h-75"
+                className="aspect-square w-full rounded-md bg-gray-200 object-cover lg:h-72"
                 width={200}
                 height={200}
               />
@@ -263,25 +263,27 @@ export default function WardrobeItems({ filters }: Props) {
                 <span className="font-medium">Added:</span>{" "}
                 {formatDate(product.created_at)}
               </p>
-              <button
-                onClick={() => handleEditClick(product)}
-                className="w-full mt-3 text-sm px-3 py-1.5 rounded-md font-semibold shadow-sm bg-indigo-600 hover:bg-indigo-500 text-white cursor-pointer"
-              >
-                Edit
-              </button>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setConfirmItemId(product.id);
-                }}
-                className={`w-full mt-2 text-sm px-3 py-1.5 rounded-md font-semibold shadow-sm ${
-                  loadingId === product.id
-                    ? "bg-gray-400 text-white cursor-not-allowed"
-                    : "bg-red-600 text-white hover:bg-red-500 cursor-pointer"
-                }`}
-              >
-                {loadingId === product.id ? "Deleting..." : "Delete"}
-              </button>
+              <div className="mt-3 flex flex-col gap-y-2 lg:flex-row lg:gap-x-2">
+                <button
+                  onClick={() => handleEditClick(product)}
+                  className="w-full text-sm px-3 py-1.5 rounded-md font-semibold shadow-sm bg-indigo-600 hover:bg-indigo-500 text-white cursor-pointer"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setConfirmItemId(product.id);
+                  }}
+                  className={`w-full text-sm px-3 py-1.5 rounded-md font-semibold shadow-sm ${
+                    loadingId === product.id
+                      ? "bg-gray-400 text-white cursor-not-allowed"
+                      : "bg-red-600 hover:bg-red-500 text-white cursor-pointer"
+                  }`}
+                >
+                  {loadingId === product.id ? "Deleting..." : "Delete"}
+                </button>
+              </div>
             </div>
           ))}
         </div>
