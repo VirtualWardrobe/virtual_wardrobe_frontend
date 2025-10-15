@@ -18,15 +18,20 @@ export default function Hero() {
         </div>
         <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
           <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-            <div className="relative rounded-full px-3 py-1 text-sm/6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-              New features in v2.0.{" "}
-              <Link
-                href={"/new-features"}
-                className="font-semibold text-indigo-600"
+            <div className="relative rounded-full px-4 py-2 text-base text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20 flex items-center justify-center">
+              <span className="relative flex h-3 w-3 mr-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+              </span>
+              The website has been suspended. Please contact the owner for more
+              support.
+              {/* <Link
+              href={"/new-features"}
+              className="font-semibold text-indigo-600"
               >
-                <span aria-hidden="true" className="absolute inset-0" />
-                Read more <span aria-hidden="true">&rarr;</span>
-              </Link>
+              <span aria-hidden="true" className="absolute inset-0" />
+              Read more <span aria-hidden="true">&rarr;</span>
+              </Link> */}
             </div>
           </div>
           <div className="text-center">
