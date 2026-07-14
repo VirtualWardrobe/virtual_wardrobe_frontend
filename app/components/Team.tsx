@@ -31,7 +31,7 @@ export default function Team() {
       <div className="mt-12 flex justify-center">
         <div className="text-center">
           <Image
-            src="https://storage.googleapis.com/vw-media-bucket/Anirudh.jpg"
+            src="https://storage.googleapis.com/virtual-wardrobe-media-bucket/Anirudh.jpg"
             alt="Anirudh P S"
             width={128}
             height={128}

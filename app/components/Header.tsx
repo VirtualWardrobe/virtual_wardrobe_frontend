@@ -73,7 +73,7 @@ export default function Header() {
           <Link href="/" className="-m-1.5 p-1.5">
             <Image
               alt="Logo"
-              src="https://storage.googleapis.com/vw-media-bucket/vw-logo-3.png"
+              src="https://storage.googleapis.com/virtual-wardrobe-media-bucket/vw-logo-3.png"
               width={150}
               height={150}
               unoptimized
@@ -162,7 +162,7 @@ export default function Header() {
             <Link href="/" className="-m-1.5 p-1.5">
               <Image
                 alt="Logo"
-                src="https://storage.googleapis.com/vw-media-bucket/vw-logo-3.png"
+                src="https://storage.googleapis.com/virtual-wardrobe-media-bucket/vw-logo-3.png"
                 width={50}
                 height={50}
                 className="h-8 w-auto"

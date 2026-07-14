@@ -63,7 +63,7 @@ export default function VirtualTryOn() {
               "Content-Type": "application/json",
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-          }
+          },
         );
 
         const data = await response.json();
@@ -91,6 +91,23 @@ export default function VirtualTryOn() {
     setModals((prev) => ({ ...prev, confirm: true }));
   };
 
+  const header = (
+    <div className="flex flex-col gap-y-4 sm:flex-row sm:items-start sm:justify-between">
+      <div className="w-full">
+        <h3 className="text-3xl font-semibold text-gray-900">Virtual Try-on</h3>
+        <p className="mt-1 max-w-2xl text-base text-gray-500 mb-2">
+          Here are the clothes you have tried virtually.
+        </p>
+      </div>
+      <Link
+        href="/virtual-tryon/new"
+        className="inline-flex w-full items-center justify-center whitespace-nowrap rounded-md bg-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-xs transition hover:bg-indigo-500 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:w-auto"
+      >
+        Conduct New Try-on
+      </Link>
+    </div>
+  );
+
   const handleConfirmDelete = async () => {
     if (!selectedTryOnId) return;
 
@@ -103,14 +120,14 @@ export default function VirtualTryOn() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
 
       const data = await response.json();
 
       if (response.ok && data.success) {
         setResults((prev) =>
-          prev.filter((item) => item.id !== selectedTryOnId)
+          prev.filter((item) => item.id !== selectedTryOnId),
         );
         handleModalSuccess("Try-on entry deleted successfully.");
       } else {
@@ -128,102 +145,80 @@ export default function VirtualTryOn() {
 
   if (loading) return <Loader />;
 
-  if (results.length === 0) {
-    return (
-      <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-        <dt className="text-sm/6 font-medium text-gray-900">Virtual Try-on</dt>
-        <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">
-          No virtual try-ons available.
-        </dd>
-        <ErrorModal
-          show={modals.error}
-          onClose={closeAllModals}
-          message={errorMessage}
-        />
-      </div>
-    );
-  }
-
   return (
-    <div className="mt-16 px-4 sm:px-0">
-      <div className="flex flex-col gap-y-4 sm:flex-row sm:items-start sm:justify-between">
-        <div className="w-full">
-          <h3 className="text-3xl font-semibold text-gray-900">
-            Virtual Try-on
-          </h3>
-          <p className="mt-1 max-w-2xl text-base text-gray-500 mb-2">
-            Here are the clothes you have tried virtually.
+    <div className="mx-auto mt-16 w-full max-w-7xl px-4 sm:px-0">
+      {header}
+
+      {results.length === 0 ? (
+        <div className="mt-24 text-center">
+          <h4 className="text-lg font-semibold text-gray-900">
+            No virtual try-ons yet
+          </h4>
+          <p className="mt-2 text-sm text-gray-600">
+            Start a new try-on to see your history here.
           </p>
         </div>
-        <Link href={"/virtual-tryon/new"} className="w-full sm:w-auto mb-8">
-          <button className="w-full sm:w-auto rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 cursor-pointer">
-            Conduct New Try-on
-          </button>
-        </Link>
-      </div>
-
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-3">
-        {results.map((result) => (
-          <div
-            key={result.id}
-            className="flex flex-col justify-between rounded-md bg-white p-4 shadow-md h-full"
-          >
-            <div className="grid grid-cols-3 gap-4">
-              {/* Human & Garment Images */}
-              <div className="col-span-1 flex flex-col gap-6">
-                {[
-                  { src: result.human_image_url, label: "Original" },
-                  { src: result.garment_image_url, label: "Garment" },
-                ].map(({ src, label }) => (
-                  <div key={label} className="flex flex-col items-center">
-                    <div className="w-full overflow-hidden rounded bg-gray-100">
-                      <Image
-                        src={src}
-                        alt={label}
-                        width={300}
-                        height={300}
-                        className="h-full w-full object-cover object-center"
-                      />
+      ) : (
+        <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+          {results.map((result) => (
+            <div
+              key={result.id}
+              className="flex flex-col justify-between rounded-2xl bg-white p-5 shadow-md ring-1 ring-gray-100"
+            >
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+                <div className="flex flex-col gap-5 md:col-span-1">
+                  {[
+                    { src: result.human_image_url, label: "Original" },
+                    { src: result.garment_image_url, label: "Garment" },
+                  ].map(({ src, label }) => (
+                    <div key={label} className="flex flex-col items-center">
+                      <div className="w-full overflow-hidden rounded-lg bg-gray-100">
+                        <Image
+                          src={src}
+                          alt={label}
+                          width={300}
+                          height={300}
+                          className="h-full w-full object-cover object-center"
+                        />
+                      </div>
+                      <p className="mt-2 text-sm text-gray-600">{label}</p>
                     </div>
-                    <p className="mt-2 text-sm text-gray-600">{label}</p>
-                  </div>
-                ))}
-              </div>
-
-              {/* Result Image */}
-              <div className="col-span-2 flex flex-col items-center">
-                <div className="w-full flex-1 overflow-hidden rounded bg-gray-100">
-                  <Image
-                    src={result.result_image_url}
-                    alt="Result"
-                    width={600}
-                    height={600}
-                    className="h-full w-full object-cover object-center"
-                  />
+                  ))}
                 </div>
-                <p className="mt-2 text-sm text-gray-600">Result</p>
+
+                <div className="flex flex-col items-center md:col-span-2">
+                  <div className="w-full overflow-hidden rounded-lg bg-gray-100">
+                    <Image
+                      src={result.result_image_url}
+                      alt="Result"
+                      width={600}
+                      height={600}
+                      className="h-full w-full object-cover object-center"
+                    />
+                  </div>
+                  <p className="mt-2 text-sm text-gray-600">Result</p>
+                </div>
+              </div>
+
+              <div className="mt-4 flex flex-col gap-4 border-t border-gray-100 pt-4 text-sm text-gray-600 sm:flex-row sm:items-center sm:justify-between">
+                <button
+                  onClick={() => handleDeleteClick(result.id)}
+                  className="inline-flex items-center justify-center rounded-md bg-red-600 px-3 py-2 text-xs font-semibold text-white transition hover:bg-red-500 cursor-pointer"
+                >
+                  Delete
+                </button>
+                <span className="text-left sm:text-right">
+                  Tried on:{" "}
+                  {new Date(result.created_at).toLocaleString("en-US", {
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                  })}
+                </span>
               </div>
             </div>
-
-            {/* Bottom: Delete + Timestamp */}
-            <div className="mt-4 gap-6 flex justify-between items-center text-sm text-gray-600">
-              <button
-                onClick={() => handleDeleteClick(result.id)}
-                className="mt-2 rounded-md bg-red-600 px-3 py-2 text-xs font-semibold text-white hover:bg-red-500 cursor-pointer"
-              >
-                Delete
-              </button>
-              <span className="text-right">
-                Tried on:{" "}
-                {new Date(result.created_at).toLocaleString("en-US", {
-                  dateStyle: "medium",
-                  timeStyle: "short",
-                })}
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       {/* Modals */}
       <ConfirmModal

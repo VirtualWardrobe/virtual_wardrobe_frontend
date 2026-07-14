@@ -18,21 +18,18 @@ export default function Hero() {
         </div>
         <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
           <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-            <div className="relative rounded-full px-4 py-2 text-base text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20 flex items-center justify-center">
-              <span className="relative flex h-3 w-3 mr-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+            <Link
+              href="/new-features"
+              aria-label="Read what's new in v2.0"
+              className="inline-flex items-center gap-x-3 rounded-full px-4 py-2 text-sm font-semibold ring-1 ring-indigo-200 hover:ring-indigo-300 transition-colors"
+            >
+              <span className="text-sm leading-6 text-indigo-900">
+                What&apos;s New in v2.0
               </span>
-              The website is paused for now. Please reach out to the creator for
-              more info.
-              {/* <Link
-              href={"/new-features"}
-              className="font-semibold text-indigo-600"
-              >
-              <span aria-hidden="true" className="absolute inset-0" />
-              Read more <span aria-hidden="true">&rarr;</span>
-              </Link> */}
-            </div>
+              <span className="text-sm text-indigo-600 flex items-center gap-x-1">
+                Read more <span aria-hidden="true">→</span>
+              </span>
+            </Link>
           </div>
           <div className="text-center">
             <h1 className="text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl">

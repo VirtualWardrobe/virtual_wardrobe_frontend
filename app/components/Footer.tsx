@@ -19,7 +19,7 @@ export default function Footer() {
               <Link href={"/"} className="-m-1.5 p-1.5">
                 <Image
                   alt="Logo"
-                  src="https://storage.googleapis.com/vw-media-bucket/vw-logo-3.png"
+                  src="https://storage.googleapis.com/virtual-wardrobe-media-bucket/vw-logo-3.png"
                   width={150}
                   height={150}
                   unoptimized
@@ -141,7 +141,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="mt-16 border-t border-gray-200 pt-6 text-center text-sm text-gray-500">
-          &copy; 2025 Virtual Wardrobe. All rights reserved.
+          &copy; 2026 Virtual Wardrobe. All rights reserved.
         </div>
       </div>
     </footer>
