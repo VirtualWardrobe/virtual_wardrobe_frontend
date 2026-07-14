@@ -22,6 +22,62 @@ type WardrobeItem = {
   image_url: string;
 };
 
+const MAX_UPLOAD_DIMENSION = 1280;
+const MAX_UPLOAD_BYTES = 1_000_000;
+const JPEG_QUALITY = 0.82;
+
+function loadImage(sourceUrl: string) {
+  return new Promise<HTMLImageElement>((resolve, reject) => {
+    const image = new window.Image();
+    image.onload = () => resolve(image);
+    image.onerror = () => reject(new Error("Failed to load image for upload."));
+    image.src = sourceUrl;
+  });
+}
+
+async function optimizeUploadImage(file: File) {
+  if (file.size <= MAX_UPLOAD_BYTES) {
+    return file;
+  }
+
+  const objectUrl = URL.createObjectURL(file);
+
+  try {
+    const image = await loadImage(objectUrl);
+    const longestSide = Math.max(image.naturalWidth, image.naturalHeight);
+    const scale = Math.min(1, MAX_UPLOAD_DIMENSION / longestSide);
+
+    const width = Math.max(1, Math.round(image.naturalWidth * scale));
+    const height = Math.max(1, Math.round(image.naturalHeight * scale));
+
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+
+    const context = canvas.getContext("2d");
+    if (!context) {
+      return file;
+    }
+
+    context.fillStyle = "#ffffff";
+    context.fillRect(0, 0, width, height);
+    context.drawImage(image, 0, 0, width, height);
+
+    const blob = await new Promise<Blob | null>((resolve) => {
+      canvas.toBlob(resolve, "image/jpeg", JPEG_QUALITY);
+    });
+
+    if (!blob) {
+      return file;
+    }
+
+    const baseName = file.name.replace(/\.[^.]+$/, "") || "upload";
+    return new File([blob], `${baseName}.jpg`, { type: "image/jpeg" });
+  } finally {
+    URL.revokeObjectURL(objectUrl);
+  }
+}
+
 export default function VirtualTryOnForm() {
   const [humanImage, setHumanImage] = useState<File | null>(null);
   const [garmentImage, setGarmentImage] = useState<File | null>(null);
@@ -113,7 +169,8 @@ export default function VirtualTryOnForm() {
       setLoading(true);
 
       const formData = new FormData();
-      formData.append("human_image", humanImage);
+      const optimizedHumanImage = await optimizeUploadImage(humanImage);
+      formData.append("human_image", optimizedHumanImage);
 
       if (selectedWardrobeItemId) {
         const selectedItem = wardrobeItems.find(
@@ -139,9 +196,15 @@ export default function VirtualTryOnForm() {
           { type: imageBlob.type || "image/jpeg" },
         );
 
-        formData.append("garment_image", garmentFile);
+        formData.append(
+          "garment_image",
+          await optimizeUploadImage(garmentFile),
+        );
       } else if (garmentImage) {
-        formData.append("garment_image", garmentImage);
+        formData.append(
+          "garment_image",
+          await optimizeUploadImage(garmentImage),
+        );
       }
 
       const res = await fetch(
