@@ -40,7 +40,7 @@ export default function AddItem() {
       }
 
       const url = new URL(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/wardrobe-items`
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/wardrobe-items`,
       );
 
       if (category)
@@ -311,7 +311,7 @@ export default function AddItem() {
                   type="file"
                   accept="image/*"
                   onChange={(e) => setImage(e.target.files?.[0] || null)}
-                  className="block w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:bg-indigo-100 file:text-indigo-600 hover:file:bg-indigo-200 transition cursor-pointer"
+                  className="block w-full px-4 py-2 border file:cursor-pointer border-gray-300 rounded-lg text-gray-700 bg-white file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:bg-indigo-100 file:text-indigo-600 hover:file:bg-indigo-200 transition cursor-pointer"
                 />
               </div>
             </div>

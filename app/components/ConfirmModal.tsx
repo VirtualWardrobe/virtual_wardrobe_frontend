@@ -1,4 +1,7 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 type ConfirmModalProps = {
   show: boolean;
@@ -13,10 +16,27 @@ export default function ConfirmModal({
   onConfirm,
   message,
 }: ConfirmModalProps) {
-  if (!show) return null;
+  const [mounted, setMounted] = useState(false);
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (show) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [show]);
+
+  if (!show || !mounted) return null;
+
+  const modalContent = (
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/20 backdrop-blur-sm">
       <div className="bg-white rounded-xl p-6 w-full max-w-sm mx-8 shadow-lg text-center">
         <p className="text-md font-medium text-gray-800 mb-6">{message}</p>
         <div className="flex justify-center gap-4">
@@ -36,4 +56,6 @@ export default function ConfirmModal({
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }

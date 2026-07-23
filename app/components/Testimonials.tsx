@@ -73,7 +73,7 @@ export default function Testimonials() {
         setIsFading(true);
         setTimeout(() => {
           setCurrentTestimonialIndex((prevIndex) =>
-            prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1
+            prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1,
           );
           setIsFading(false);
         }, fadeDuration);
@@ -148,7 +148,7 @@ export default function Testimonials() {
             <button
               key={testimonial.id}
               onClick={() => handleDotClick(index)}
-              className={`block h-3 w-3 rounded-full transition-colors duration-200 ${
+              className={`block h-3 w-3 rounded-full transition-colors duration-200 cursor-pointer ${
                 currentTestimonialIndex === index
                   ? "bg-indigo-600"
                   : "bg-gray-300 hover:bg-gray-400"

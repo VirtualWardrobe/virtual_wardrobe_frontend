@@ -18,18 +18,18 @@ export default function Hero() {
         </div>
         <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
           <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-            <Link
-              href="/new-features"
-              aria-label="Read what's new in v2.0"
-              className="inline-flex items-center gap-x-3 rounded-full px-4 py-2 text-sm font-semibold ring-1 ring-indigo-200 hover:ring-indigo-300 transition-colors"
-            >
+            <div className="inline-flex items-center gap-x-3 rounded-full px-4 py-2 text-sm font-semibold ring-1 ring-indigo-200">
               <span className="text-sm leading-6 text-indigo-900">
                 What&apos;s New in v2.0
               </span>
-              <span className="text-sm text-indigo-600 flex items-center gap-x-1">
-                Read more <span aria-hidden="true">→</span>
-              </span>
-            </Link>
+              <Link
+                href="/new-features"
+                aria-label="Read what's new in v2.0"
+                className="text-sm text-indigo-600 flex items-center gap-x-1 hover:text-indigo-800 transition-colors"
+              >
+                Read more <span aria-hidden="true">&rarr;</span>
+              </Link>
+            </div>
           </div>
           <div className="text-center">
             <h1 className="text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl">

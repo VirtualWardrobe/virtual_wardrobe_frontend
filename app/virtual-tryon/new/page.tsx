@@ -248,8 +248,8 @@ export default function VirtualTryOnForm() {
         onClose={() => setShowError(false)}
       />
 
-      <div className="flex h-screen justify-center items-center mt-6">
-        <form onSubmit={handleSubmit} className="space-y-8 max-w-2xl">
+      <div className="flex min-h-screen justify-center items-start pt-24 pb-12 px-4 sm:px-6">
+        <form onSubmit={handleSubmit} className="space-y-8 w-full max-w-2xl">
           <h2 className="text-3xl font-semibold text-gray-900 mb-2">
             New Virtual Try-on
           </h2>
@@ -270,7 +270,7 @@ export default function VirtualTryOnForm() {
               type="file"
               accept="image/*"
               onChange={(e) => setHumanImage(e.target.files?.[0] || null)}
-              className="block w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 bg-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-indigo-100 file:text-indigo-600 hover:file:bg-indigo-200 transition cursor-pointer"
+              className="block w-full px-4 py-3 border file:cursor-pointer border-gray-300 rounded-lg text-gray-700 bg-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-indigo-100 file:text-indigo-600 hover:file:bg-indigo-200 transition cursor-pointer"
             />
           </div>
 
@@ -301,7 +301,8 @@ export default function VirtualTryOnForm() {
                       No wardrobe items available yet.
                     </p>
                   )}
-                <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+
+                <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 max-h-80 overflow-y-auto p-1 scrollbar-thin scrollbar-thumb-gray-300">
                   {wardrobeItems.map((item) => {
                     const isSelected = selectedWardrobeItemId === item.id;
 
@@ -313,7 +314,7 @@ export default function VirtualTryOnForm() {
                           setSelectedWardrobeItemId(item.id);
                           setGarmentImage(null);
                         }}
-                        className={`group overflow-hidden rounded-xl border bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-400 ${
+                        className={`group overflow-hidden rounded-xl border cursor-pointer bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-400 ${
                           isSelected
                             ? "border-indigo-500 ring-2 ring-indigo-200"
                             : "border-gray-200"
