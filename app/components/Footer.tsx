@@ -7,6 +7,7 @@ import {
 } from "react-icons/fa6";
 import Image from "next/image";
 import Link from "next/link";
+import { version } from "../../package.json";
 
 export default function Footer() {
   return (
@@ -143,6 +144,7 @@ export default function Footer() {
         <div className="mt-16 border-t border-gray-200 pt-6 text-center text-sm text-gray-500">
           &copy; 2026 Virtual Wardrobe. All rights reserved.
         </div>
+        <div className="mt-2 text-center text-sm text-gray-500">v{version}</div>
       </div>
     </footer>
   );

@@ -12,6 +12,16 @@ import React, {
 import SuccessModal from "@/app/components/SuccessModal";
 import ErrorModal from "@/app/components/ErrorModal";
 
+// Define stable, unique keys for the fixed 6 OTP input slots
+const OTP_INPUT_KEYS = [
+  "otp-slot-0",
+  "otp-slot-1",
+  "otp-slot-2",
+  "otp-slot-3",
+  "otp-slot-4",
+  "otp-slot-5",
+];
+
 export default function VerifyOtp(): JSX.Element {
   const [otp, setOtp] = useState<string[]>(Array(6).fill(""));
   const [error, setError] = useState<string>("");
@@ -53,7 +63,7 @@ export default function VerifyOtp(): JSX.Element {
   const handleKeyDown = (
     element: HTMLInputElement,
     event: KeyboardEvent<HTMLInputElement>,
-    index: number
+    index: number,
   ): void => {
     if (event.key === "Backspace" && element.value === "" && index > 0) {
       inputRefs.current[index - 1]?.focus();
@@ -80,7 +90,7 @@ export default function VerifyOtp(): JSX.Element {
   };
 
   const handleVerify = async (
-    e: React.FormEvent<HTMLFormElement>
+    e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     e.preventDefault();
     setError("");
@@ -111,7 +121,7 @@ export default function VerifyOtp(): JSX.Element {
             session_id: String(sessionId),
             otp: String(fullOtp),
           }),
-        }
+        },
       );
 
       const data = await res.json();
@@ -132,7 +142,7 @@ export default function VerifyOtp(): JSX.Element {
   };
 
   const handleResendOtp = async (
-    e: React.MouseEvent<HTMLAnchorElement>
+    e: React.MouseEvent<HTMLAnchorElement>,
   ): Promise<void> => {
     e.preventDefault();
     if (resendTimer > 0 || !sessionId) return;
@@ -145,7 +155,7 @@ export default function VerifyOtp(): JSX.Element {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       const data = await res.json();
@@ -174,13 +184,13 @@ export default function VerifyOtp(): JSX.Element {
       <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-sm">
         <form className="space-y-8" onSubmit={handleVerify}>
           <div className="flex justify-center space-x-2">
-            {otp.map((value, index) => (
+            {OTP_INPUT_KEYS.map((keyId, index) => (
               <input
-                key={`otp-input-${index}`}
+                key={keyId}
                 type="text"
                 inputMode="numeric"
                 maxLength={1}
-                value={value}
+                value={otp[index]}
                 onChange={(e) => handleChange(e.target, index)}
                 onKeyDown={(e) => handleKeyDown(e.currentTarget, e, index)}
                 onPaste={handlePaste}
